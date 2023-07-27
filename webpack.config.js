@@ -1,6 +1,10 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+    entry: [
+        "./src/js/theme.js",
+        "./src/scss/theme.scss"
+    ],
     plugins: [
         new HtmlWebpackPlugin(),
     ],
