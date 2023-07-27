@@ -1,5 +1,7 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path');
 
 const templates = [
     "index", 
@@ -14,6 +16,14 @@ module.exports = {
     module: {
         rules: [
             { test: /\.ejs$/i, use: [ { loader: 'ejs-easy-loader' } ] },
+            {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+        // generator: {
+        //   emit: false,
+        // }
+      }
+  ,
         {
         test: /\.(scss)$/,
         use: [
@@ -57,6 +67,14 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "./assets/css/[name].bundle.css"
         }),
+        new CopyPlugin({
+          patterns: [
+            {
+              from: './src/img',
+              to: './assets/img',
+            }
+          ],
+        }),
     ],
     output: {
         filename: './assets/js/[name].bundle.js',
@@ -65,4 +83,10 @@ module.exports = {
     devServer: {
         watchFiles: 'src/**/*',
     },
+    resolve: {
+      roots: [
+         path.resolve(__dirname, 'src'),
+         path.resolve(__dirname, 'node_modules')
+      ]
+   }
 };
