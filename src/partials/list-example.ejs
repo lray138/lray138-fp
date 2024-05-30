@@ -1,0 +1,4 @@
+<%
+	list_items = R.map(({name}) => `<li>${name}</li>`)(names).join('');
+%>
+<ul><%- list_items %></ul>

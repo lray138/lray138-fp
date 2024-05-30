@@ -1,17 +1,19 @@
-/*
 @font-face {
   font-family: "Acer";
-  src: url("../fonts/oldschool-pc-fonts/Web437_Acer710_CGA-2y.woff") format("woff");
+  src: url("../fonts/Web437_Acer710_CGA-2y.woff") format("woff");
   font-display: swap;
 }
 
 h1 {
   font-family: 'Acer', serif;
 }
-*/
 
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
 
 h2 {
   font-family: 'Tilt Neon', cursive;
+}
+
+img.hello-world {
+    margin-bottom: 1rem;
 }
