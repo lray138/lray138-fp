@@ -6,7 +6,7 @@ const fs = require('fs');
 const R = require('ramda');
 
 // array of pages from the './src/pages' directory
-const pages = R.map(R.replace(".ejs", ""))(fs.readdirSync("./src/pages").filter(R.endsWith(".ejs")));
+const pages = R.map(R.replace(".ejs", ""))(fs.readdirSync("./src/templates/").filter(R.endsWith(".ejs")));
 
 // read JSON data 
 const readJson = (filePath) => {
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
                 try {
                     const now = new Date();
                     R.map(page => {
-                        fs.utimesSync(`./src/pages/${page}.ejs`, now, now);
+                        fs.utimesSync(`./src/templates/${page}.ejs`, now, now);
                     }, pages);
                 } catch (error) {
                     console.error(`Error touching file (${filePath}):`, error);
@@ -109,7 +109,7 @@ module.exports = {
     plugins: [
         ...pages.map(name => {
             return new HtmlWebpackPlugin({
-                template: `./src/pages/${name}.ejs`,
+                template: `./src/templates/${name}.ejs`,
                 filename: `./${name}.html`,
                 inject: "body",
                 templateParameters: {

@@ -8,7 +8,7 @@
 	<body>
 		<div class="container">
 	    	<div class="row">
-	        	<div class="col-sm-12">
+	        	<div class="col-sm-6">
 	        		<h1>Hello World!</h1>
 	        		<img class="hello-world" src="./assets/img/hello-world.png" alt="a really cool image of hello world logo provided by microsoft"/>
 	        		<h2>BraveWork Salutes you!</h2>
@@ -22,6 +22,9 @@
 	        				names: readJson("example.json")
 	        			})
 	        		})%>
+	        	</div>
+	        	<div class="col-sm-6">
+					<%- require ("/partials/card.ejs")() %>
 	        	</div>
 	    	</div>
 		</div>
