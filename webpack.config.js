@@ -22,25 +22,23 @@ const readJson = (filePath) => {
     }
 };
 
-if (process.env.NODE_ENV === 'development') {
-    // manually update time on pages to live reload HTML based on JSON updates
-    fs.watch("./src/json", (eventType, filename) => {
-        if (filename && filename.endsWith('.json')) {
-            const filePath = path.join("./src/json/", filename);
-            const jsonData = readJson(filePath);
-            if (jsonData) {
-                try {
-                    const now = new Date();
-                    R.map(page => {
-                        fs.utimesSync(`./src/templates/${page}.ejs`, now, now);
-                    }, pages);
-                } catch (error) {
-                    console.error(`Error touching file (${filePath}):`, error);
-                }
+// manually update time on pages to live reload HTML based on JSON updates
+fs.watch("./src/json", (eventType, filename) => {
+    if (filename && filename.endsWith('.json')) {
+        const filePath = path.join("./src/json/", filename);
+        const jsonData = readJson(filePath);
+        if (jsonData) {
+            try {
+                const now = new Date();
+                R.map(page => {
+                    fs.utimesSync(`./src/templates/${page}.ejs`, now, now);
+                }, pages);
+            } catch (error) {
+                console.error(`Error touching file (${filePath}):`, error);
             }
         }
-    });
-}
+    }
+});
 
 // "academic-ish" example of appending classes to a base class in HTML
 function addNameToClassList(base_class_list) {
@@ -125,8 +123,12 @@ module.exports = {
         new CopyPlugin({
           patterns: [
             {
-              from: './src/img',
-              to: './assets/img',
+                from: './src/img',
+                to: './assets/img',
+            },
+            {
+                from: 'src/js/vendor', 
+                to: 'assets/js/vendor' 
             }
           ],
         }),
@@ -137,6 +139,7 @@ module.exports = {
     },
     devServer: {
         watchFiles: 'src/**/*',
+        hot:true
     },
     resolve: {
       roots: [

@@ -1,40 +1,48 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>lray138 Webpack Base</title>
-	</head>
-	<body>
-		<div id="header-wrap" class="container">
-		    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-		      <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-		        (IMG)
-		        <span class="fs-4">BraveWork</span>
-		      </a>
-		      <ul class="nav nav-pills">
-		        <li class="nav-item"><a href="index.html" class="nav-link active" aria-current="page">Overview</a></li>
-		        <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
-		      </ul>
-		    </header>
-  		</div>
-		<div class="container">
-	    	<div class="row">
-	        	<div class="col-md-3">
-	        		Styleguide
-	        	</div>
-	        	<div class="col-md-8">
-					
-	        	</div>
-	    	</div>
-		</div>
-	</body>
-</html>
+<%- require("/partials/site/top.ejs")() %>
 
-<!--
-// two ways of looking at it which is 
-// top and bottom and then inbetween, top would then include the "body" tag
-// or, the "functional" way I had been trying but I think slighty being off which would be
-// head is it's own structure, body is it's own strucutre, and then it gets' passed to html, which is paired with a doctype.
-// the question is how much overhead in that way of thinking is good.
--->
+<main class="container">
+	<div class="row">
+    	<div class="col-sm-6">
+    		<h1>Hello World!?</h1>
+    		<img class="hello-world" src="./assets/img/hello-world.png" alt="a really cool image of hello world logo provided by microsoft"/>
+    		<h2>BraveWork Salutes you!</h2>
+    		<br/>
+    		The index is for to list all templates and provide the design overview.
+
+    		<script>
+    			R.map(() => {}, ['a', 'b', 'c']);
+    		</script>
+
+    		<%- require("/partials/example.ejs")({ 
+    			addNameToClassList, // function passed in via templateParameters in 
+    			html_chunk: `<p class="lead">Some Lead text for example</p>`,
+    			names_list: require('/partials/list-example.ejs')({
+    				R,
+    				names: readJson("example.json")
+    			})
+    		})%>
+    	</div>
+    	<div class="col-sm-6">
+			<form id="testz">
+	            <div class="mb-3">
+	                <label for="name" class="form-label">Name</label>
+	                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+	            </div>
+	            <div class="mb-3">
+	                <label for="date" class="form-label">Date</label>
+	                <input data-flatpickr="true" type="text" class="form-control date-time-text" id="date" required="true" name="date" autocomplete="off">
+	            </div>
+	            <button type="submit" class="btn btn-primary">Submit</button>
+	            <script>
+	            document.getElementById("testz").addEventListener("submit", function(e) {
+	            	e.preventDefault();
+	            	console.log("herr");
+	            });
+	        </script>
+	        </form>
+	        
+    	</div>
+	</div>
+</main>
+
+<%- require("/partials/site/bottom.ejs")() %>
