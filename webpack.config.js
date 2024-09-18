@@ -6,7 +6,7 @@ const fs = require('fs');
 const R = require('ramda');
 
 // array of pages from the './src/pages' directory
-const pages = R.map(R.replace(".ejs", ""))(fs.readdirSync("./src/templates/").filter(R.endsWith(".ejs")));
+const pages = R.map(R.replace(".ejs", ""))(fs.readdirSync("./src/pages/").filter(R.endsWith(".ejs")));
 
 // read JSON data 
 const readJson = (filePath) => {
@@ -22,23 +22,28 @@ const readJson = (filePath) => {
     }
 };
 
-// manually update time on pages to live reload HTML based on JSON updates
-fs.watch("./src/json", (eventType, filename) => {
-    if (filename && filename.endsWith('.json')) {
-        const filePath = path.join("./src/json/", filename);
-        const jsonData = readJson(filePath);
-        if (jsonData) {
-            try {
-                const now = new Date();
-                R.map(page => {
-                    fs.utimesSync(`./src/templates/${page}.ejs`, now, now);
-                }, pages);
-            } catch (error) {
-                console.error(`Error touching file (${filePath}):`, error);
+if (process.env.NODE_ENV === 'development') {
+    console.log("Running in development mode: watching JSON file changes...");
+
+    // Manually update time on pages to live reload HTML based on JSON updates
+    fs.watch("./src/json", (eventType, filename) => {
+        if (filename && filename.endsWith('.json')) {
+            const filePath = path.join("./src/json/", filename);
+            const jsonData = readJson(filePath);
+
+            if (jsonData) {
+                try {
+                    const now = new Date();
+                    R.map(page => {
+                        fs.utimesSync(`./src/pages/${page}.ejs`, now, now);
+                    }, pages);
+                } catch (error) {
+                    console.error(`Error touching file (${filePath}):`, error);
+                }
             }
         }
-    }
-});
+    });
+}
 
 // "academic-ish" example of appending classes to a base class in HTML
 function addNameToClassList(base_class_list) {
@@ -72,7 +77,7 @@ module.exports = {
                 },
             },
             {
-            test: /\.(scss)$/,
+            test: /\.(s?css)$/,
             use: [
                 {
                         loader: MiniCssExtractPlugin.loader,
@@ -107,7 +112,7 @@ module.exports = {
     plugins: [
         ...pages.map(name => {
             return new HtmlWebpackPlugin({
-                template: `./src/templates/${name}.ejs`,
+                template: `./src/pages/${name}.ejs`,
                 filename: `./${name}.html`,
                 inject: "body",
                 templateParameters: {

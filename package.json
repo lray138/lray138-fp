@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "webpack --mode=production",
-        "server": "webpack serve --mode=development --open"
+        "server": "webpack serve --mode=development --open",
+        "proxy": "lcp --proxyUrl http://127.0.0.1 --port 9000"
     },
     "keywords": [],
     "author": "",
