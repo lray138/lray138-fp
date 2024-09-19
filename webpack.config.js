@@ -5,9 +5,31 @@ const path = require('path');
 const fs = require('fs');
 const R = require('ramda');
 const { marked } = require('marked');
+const matter = require('gray-matter');
 
 // array of pages from the './src/pages' directory
-const pages = R.map(R.replace(".ejs", ""))(fs.readdirSync("./src/pages/").filter(R.endsWith(".ejs")));
+// const pages = R.map(R.replace(".ejs", ""))(fs.readdirSync("./src/pages/").filter(R.endsWith(".ejs")));
+
+// Function to recursively get all .ejs files
+const getAllEjsFiles = (dir) => {
+    let results = [];
+
+    const list = fs.readdirSync(dir);
+
+    list.forEach((file) => {
+        const fullPath = path.join(dir, file);
+        const stat = fs.statSync(fullPath);
+        if (stat && stat.isDirectory()) {
+            results = results.concat(getAllEjsFiles(fullPath)); // Recurse into subdirectory
+        } else if (file.endsWith('.ejs')) {
+            results.push(fullPath); // Add .ejs file to results
+        }
+    });
+
+    return results;
+};
+
+const pages = getAllEjsFiles('./src/pages/');
 
 // read JSON data 
 const readJson = (filePath) => {
@@ -24,13 +46,18 @@ const readJson = (filePath) => {
 };
 
 const readMarkdown = (filePath) => {
-    filePath = `./src/markdown/${filePath}`;
+    filePath = `./src/content/${filePath}`;
     try {
-        return marked(fs.readFileSync(filePath, 'utf8'));
+        const { data, content } = matter(fs.readFileSync(filePath, 'utf8'));
+        return {
+            data,
+            content: marked(content)
+        };
     } catch (err) {
         if (err.code === 'ENOENT') {
             return 'Markdown file not found'; // make it obvious if the path is wrong
         } else {
+            console.log(err);
             return ''; // Return empty string for other errors
         }
     }
@@ -44,8 +71,8 @@ fs.watch("./src/json", (eventType, filename) => {
         if (jsonData) {
             try {
                 const now = new Date();
-                R.map(page => {
-                    fs.utimesSync(`./src/pages/${page}.ejs`, now, now);
+                R.map(pathname => {
+                    fs.utimesSync(pathname, now, now);
                 }, pages);
             } catch (error) {
                 console.error(`Error touching file (${filePath}):`, error);
@@ -55,16 +82,16 @@ fs.watch("./src/json", (eventType, filename) => {
 });
 
 // Manually update time on pages to live reload HTML based on JSON updates
-fs.watch("./src/markdown", (eventType, filename) => {
+fs.watch("./src/content", (eventType, filename) => {
     console.log("\n\n\n\n\WHAT IS GOING ON ???\n\n\n\n\n\n\n\n\n");
     if (filename && filename.endsWith('.md')) {
-        const filePath = path.join("./src/markdown/", filename);
+        const filePath = path.join("./src/content/", filename);
         const markdownData = readMarkdown(filePath);
         if (markdownData) {
             try {
                 const now = new Date();
-                R.map(page => {
-                    fs.utimesSync(`./src/pages/${page}.ejs`, now, now);
+                R.map(pathname => {
+                    fs.utimesSync(pathname, now, now);
                 }, pages);
             } catch (error) {
                 console.error(`Error touching file (${filePath}):`, error);
@@ -138,19 +165,22 @@ module.exports = {
         ]
     },
     plugins: [
-        ...pages.map(name => {
+        ...pages.map(pathname => { 
+            name = pathname.replace('.ejs', '');
+            filename = name.replace('src/pages/', '');
+            console.log("FILENAME: " + filename);
             return new HtmlWebpackPlugin({
-                template: `./src/pages/${name}.ejs`,
-                filename: `./${name}.html`,
+                template: pathname,
+                filename: `./${filename}.html`,
                 inject: "body",
                 templateParameters: {
                     name,
                     site: readJson("site.json"),
                     page: {
                         title: "",
-                        path: path.relative('./src/pages', `./src/pages/${name}.html`)
+                        path: `${filename}.html`
                     },
-                    path: path.relative('./src/pages', `./src/pages/${name}.html`),
+                    path: `${filename}.html`,
                     readJson,
                     readMarkdown,
                     addNameToClassList,
