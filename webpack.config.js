@@ -22,28 +22,24 @@ const readJson = (filePath) => {
     }
 };
 
-if (process.env.NODE_ENV === 'development') {
-    console.log("Running in development mode: watching JSON file changes...");
-
-    // Manually update time on pages to live reload HTML based on JSON updates
-    fs.watch("./src/json", (eventType, filename) => {
-        if (filename && filename.endsWith('.json')) {
-            const filePath = path.join("./src/json/", filename);
-            const jsonData = readJson(filePath);
-
-            if (jsonData) {
-                try {
-                    const now = new Date();
-                    R.map(page => {
-                        fs.utimesSync(`./src/pages/${page}.ejs`, now, now);
-                    }, pages);
-                } catch (error) {
-                    console.error(`Error touching file (${filePath}):`, error);
-                }
+// Manually update time on pages to live reload HTML based on JSON updates
+fs.watch("./src/json", (eventType, filename) => {
+    console.log("\n\n\n\n\WHAT IS GOING ON ???\n\n\n\n\n\n\n\n\n");
+    if (filename && filename.endsWith('.json')) {
+        const filePath = path.join("./src/json/", filename);
+        const jsonData = readJson(filePath);
+        if (jsonData) {
+            try {
+                const now = new Date();
+                R.map(page => {
+                    fs.utimesSync(`./src/pages/${page}.ejs`, now, now);
+                }, pages);
+            } catch (error) {
+                console.error(`Error touching file (${filePath}):`, error);
             }
         }
-    });
-}
+    }
+});
 
 // "academic-ish" example of appending classes to a base class in HTML
 function addNameToClassList(base_class_list) {
@@ -116,6 +112,13 @@ module.exports = {
                 filename: `./${name}.html`,
                 inject: "body",
                 templateParameters: {
+                    name,
+                    site: readJson("site.json"),
+                    page: {
+                        title: "",
+                        path: path.relative('./src/pages', `./src/pages/${name}.html`)
+                    },
+                    path: path.relative('./src/pages', `./src/pages/${name}.html`),
                     readJson,
                     addNameToClassList,
                     R
@@ -130,6 +133,10 @@ module.exports = {
             {
                 from: './src/img',
                 to: './assets/img',
+            },
+            {
+                from: './src/css',
+                to: './assets/css',
             },
             {
                 from: 'src/js/vendor', 

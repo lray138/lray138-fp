@@ -1,0 +1,13 @@
+{
+	"name": "J. Stevens",
+	"main_nav": [
+		{
+			"text": "Home",
+			"href": "index.html"
+		},
+		{
+			"text": "Blog",
+			"href": "blog-landing.html"
+		}
+	]
+}

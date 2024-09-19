@@ -1,8 +1,5 @@
 <%- require("/views/main.ejs")({
-	site: readJson("site.json"),
-	page: {
-		title: "Blog Post",
-		path
-	},
+	site,
+	page,
 	header: {...readJson("header.json"), current_page: page}
 }) %>

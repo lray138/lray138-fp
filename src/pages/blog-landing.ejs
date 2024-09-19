@@ -1,0 +1,15 @@
+<%
+	var posts_list = `<ul>${readJson("blog-items.json")
+		.map(x => require("/partials/blog/list-item.ejs")(x))
+		.join('')}</ul>`;
+%>
+<%- require("/views/blog-landing.ejs")({
+	site,
+	page: {
+		title: "Blog Landing",
+		path
+	},
+	header: {...readJson("header.json"), current_page: page},
+	posts_list
+})
+%>
