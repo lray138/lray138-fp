@@ -1,6 +1,7 @@
 main {
-		width: 960px;
-	}
+		width: 960px!important;
+}
+
 	ul {
 		display: flex;
 		flex-wrap: wrap;

@@ -4,11 +4,11 @@
     // const { pathname } = Astro.url;
     // const subpath = pathname.match(/[^\/]+/g);
     // const isActive = href === pathname || href === '/' + subpath?.[0];
-    if(current_page.path == href) {
+    if(current_page.path == href || current_page.path == href.substr(1)) {
        class_list += " active";
     }
 %>
-<a href="<%= href %>" class="<%= class_list %>"><%- text %></a>
+<a href="<%= href %>" class="<%= class_list %>"><%- text %> </a>
 <style>
   a {
     display: inline-block;

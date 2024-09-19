@@ -3,11 +3,11 @@
 	"main_nav": [
 		{
 			"text": "Home",
-			"href": "index.html"
+			"href": "/index.html"
 		},
 		{
 			"text": "Blog",
-			"href": "blog-landing.html"
+			"href": "/blog/index.html"
 		}
 	]
 }

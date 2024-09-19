@@ -31,6 +31,25 @@ const getAllEjsFiles = (dir) => {
 
 const pages = getAllEjsFiles('./src/pages/');
 
+// Function to recursively get all .ejs files
+const getAllMarkdownFiles = (dir) => {
+    let results = [];
+
+    const list = fs.readdirSync(dir);
+
+    list.forEach((file) => {
+        const fullPath = path.join(dir, file);
+        const stat = fs.statSync(fullPath);
+        if (stat && stat.isDirectory()) {
+            results = results.concat(getAllMarkdownFiles(fullPath)); // Recurse into subdirectory
+        } else if (file.endsWith('.md')) {
+            results.push(fullPath); // Add .ejs file to results
+        }
+    });
+
+    return results;
+};
+
 // read JSON data 
 const readJson = (filePath) => {
     filePath = `./src/json/${filePath}`;
@@ -47,6 +66,7 @@ const readJson = (filePath) => {
 
 const readMarkdown = (filePath) => {
     filePath = `./src/content/${filePath}`;
+    console.log('read md: ' + filePath);
     try {
         const { data, content } = matter(fs.readFileSync(filePath, 'utf8'));
         return {
@@ -63,8 +83,36 @@ const readMarkdown = (filePath) => {
     }
 };
 
+const blog_pages = getAllMarkdownFiles('./src/content/blog')
+    .map(x => {
+        const path = x.replace('src/content/', '').replace('.md', '.html');
+        const { data, content } = readMarkdown(x.replace('src/content/', ''));
+
+        return {
+            template: './src/pages/blog-post.ejs',
+            filename: `./${path}`,
+            data,
+            inject: "body",
+            templateParameters: {
+                content,
+                header: readJson("header.json"),
+                ...data,
+                site: readJson("site.json"),
+                page: {
+                    title: "",
+                    path
+                },
+                path,
+                readJson,
+                readMarkdown,
+                R
+            }
+        };
+    });
+
 // Manually update time on pages to live reload HTML based on JSON updates
-fs.watch("./src/json", (eventType, filename) => {
+fs.watch("./src/json/", (eventType, filename) => {
+    conole.log("json-fire");
     if (filename && filename.endsWith('.json')) {
         const filePath = path.join("./src/json/", filename);
         const jsonData = readJson(filePath);
@@ -82,8 +130,8 @@ fs.watch("./src/json", (eventType, filename) => {
 });
 
 // Manually update time on pages to live reload HTML based on JSON updates
-fs.watch("./src/content", (eventType, filename) => {
-    console.log("\n\n\n\n\WHAT IS GOING ON ???\n\n\n\n\n\n\n\n\n");
+fs.watch("./src/content", { recursive: true }, (eventType, filename) => {
+    console.log('markdown-fire');
     if (filename && filename.endsWith('.md')) {
         const filePath = path.join("./src/content/", filename);
         const markdownData = readMarkdown(filePath);
@@ -91,8 +139,9 @@ fs.watch("./src/content", (eventType, filename) => {
             try {
                 const now = new Date();
                 R.map(pathname => {
-                    fs.utimesSync(pathname, now, now);
-                }, pages);
+                    "HERE "  + console.log(pathname.filename);
+                    fs.utimesSync('./src/pages/blog/index.ejs', now, now);
+                }, blog_pages);
             } catch (error) {
                 console.error(`Error touching file (${filePath}):`, error);
             }
@@ -165,10 +214,10 @@ module.exports = {
         ]
     },
     plugins: [
+        ...blog_pages.map(x =>new HtmlWebpackPlugin(x)),
         ...pages.map(pathname => { 
             name = pathname.replace('.ejs', '');
             filename = name.replace('src/pages/', '');
-            console.log("FILENAME: " + filename);
             return new HtmlWebpackPlugin({
                 template: pathname,
                 filename: `./${filename}.html`,
@@ -183,6 +232,7 @@ module.exports = {
                     path: `${filename}.html`,
                     readJson,
                     readMarkdown,
+                    getAllMarkdownFiles,
                     addNameToClassList,
                     R
                 }
