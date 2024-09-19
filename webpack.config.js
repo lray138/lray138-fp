@@ -4,6 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const fs = require('fs');
 const R = require('ramda');
+const { marked } = require('marked');
 
 // array of pages from the './src/pages' directory
 const pages = R.map(R.replace(".ejs", ""))(fs.readdirSync("./src/pages/").filter(R.endsWith(".ejs")));
@@ -22,13 +23,44 @@ const readJson = (filePath) => {
     }
 };
 
+const readMarkdown = (filePath) => {
+    filePath = `./src/markdown/${filePath}`;
+    try {
+        return marked(fs.readFileSync(filePath, 'utf8'));
+    } catch (err) {
+        if (err.code === 'ENOENT') {
+            return 'Markdown file not found'; // make it obvious if the path is wrong
+        } else {
+            return ''; // Return empty string for other errors
+        }
+    }
+};
+
 // Manually update time on pages to live reload HTML based on JSON updates
 fs.watch("./src/json", (eventType, filename) => {
-    console.log("\n\n\n\n\WHAT IS GOING ON ???\n\n\n\n\n\n\n\n\n");
     if (filename && filename.endsWith('.json')) {
         const filePath = path.join("./src/json/", filename);
         const jsonData = readJson(filePath);
         if (jsonData) {
+            try {
+                const now = new Date();
+                R.map(page => {
+                    fs.utimesSync(`./src/pages/${page}.ejs`, now, now);
+                }, pages);
+            } catch (error) {
+                console.error(`Error touching file (${filePath}):`, error);
+            }
+        }
+    }
+});
+
+// Manually update time on pages to live reload HTML based on JSON updates
+fs.watch("./src/markdown", (eventType, filename) => {
+    console.log("\n\n\n\n\WHAT IS GOING ON ???\n\n\n\n\n\n\n\n\n");
+    if (filename && filename.endsWith('.md')) {
+        const filePath = path.join("./src/markdown/", filename);
+        const markdownData = readMarkdown(filePath);
+        if (markdownData) {
             try {
                 const now = new Date();
                 R.map(page => {
@@ -120,6 +152,7 @@ module.exports = {
                     },
                     path: path.relative('./src/pages', `./src/pages/${name}.html`),
                     readJson,
+                    readMarkdown,
                     addNameToClassList,
                     R
                 }
@@ -151,7 +184,7 @@ module.exports = {
     },
     devServer: {
         watchFiles: 'src/**/*',
-        hot:true
+        hot: true
     },
     resolve: {
       roots: [

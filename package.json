@@ -31,6 +31,8 @@
         "copy-webpack-plugin": "^12.0.2",
         "flatpickr": "^4.6.13",
         "htmx.org": "^1.9.12",
+        "markdown-it": "^14.1.0",
+        "marked": "^14.1.2",
         "ramda": "^0.30.0"
     }
 }

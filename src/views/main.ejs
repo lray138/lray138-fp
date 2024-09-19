@@ -11,34 +11,9 @@
 	})
 }) %>
 
+<% content = typeof content != "undefined" ? content : "" %>
 <main>
-	<h1>Hello World!</h1>
-	<p>It's a wonderful life, but...</p>
-	<p>
-		<blockquote>It's a hard world to get a break in<br/>
-		All the good things have been taken<br/>
-		But, girl, there are ways to make certain things pay<br/>
-		Though I'm dressed in these rags<br/>
-		I'll wear sable some day<br/></blockquote>
-	</p>
-	<p>
-		I went to the atlanta tech village yesterday with the intent of doing a "brain dump"
-		with everythign I've been up to the past, Lord knows, how many years.
-	</p>
-	<p>
-		
-	</p>
-	<p>
-		Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-			>read the docs
-		</a> or <a href="https://an.build/chat">join us on Discord</a> to ask questions.
-	</p>
-	<p>
-		Looking for a blog template with a bit more personality? Check out <a
-			href="https://github.com/Charca/astro-blog-template"
-			>astro-blog-template
-		</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-	</p>
+	<%- content %>
 </main>
 
 <%- require("./_bottom.ejs")() %>
