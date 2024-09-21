@@ -1,12 +1,8 @@
 <%
-	// var posts_list_items = `${readJson("blog-items.json")
-	// 	.map(x => require("/partials/blog/list-item.ejs")(x))
-	// 	.join('')}`;
-
-	var posts_list_items = getAllMarkdownFiles('./src/content/blog')
+	var posts_list_items = getAllMarkdownFiles('./src/pages/blog')
 		.map(x => {
-			const path = x.replace('src/content/', '/').replace('.md', '.html');
-        	const { data } = readMarkdown(x.replace('src/content/', ''));
+			const path = x.replace('src/pages/', '/').replace('.md', '.html');
+        	const { data } = readMarkdown(x.replace('src/pages/', ''));
         	return require("/partials/blog/list-item.ejs")({
         		...data,
         		href: path
@@ -14,13 +10,15 @@
 		})
 		.join('');
 %>
-<%- require("/templates/blog-landing.ejs")({
+
+<%- require("/views/main.ejs")({
 	site,
 	page: {
 		title: "Blog Landing",
 		path
 	},
+	head: `<link rel="stylesheet" href="/assets/css/blog-landing.css"/>`,
 	header: {...readJson("header.json"), current_page: page},
-	posts_list: `<ul>${posts_list_items}</ul>`
+	content: `<section><ul>${posts_list_items}</ul></section>`
 })
 %>

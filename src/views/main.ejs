@@ -1,4 +1,11 @@
+<%
+	var head = typeof head !== "undefined" ? head : "",
+		header = typeof header !== "undefined" ? header : "";
+		footer_js = typeof footer_js != "undefined" ? footer_js : "";
+%>
+
 <%- require("./_top.ejs")({
+	head,
 	header: require("/partials/site/header.ejs")({
 		site_name: site.name,
 		page,
@@ -16,4 +23,6 @@
 	<%- content %>
 </main>
 
-<%- require("./_bottom.ejs")() %>
+<%- require("./_bottom.ejs")({
+	footer_js
+}) %>

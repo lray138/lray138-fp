@@ -1,5 +1,5 @@
 ---
-title: 'First Post'
+title: 'Welcome To The Jungle'
 description: 'Lorem ipsum dolor sit amet'
 pub_date: 'Jul 22 2022'
 hero_src: '/assets/img/blog/blog-placeholder-1.jpg'

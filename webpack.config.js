@@ -50,6 +50,7 @@ const getAllMarkdownFiles = (dir) => {
     return results;
 };
 
+
 // read JSON data 
 const readJson = (filePath) => {
     filePath = `./src/json/${filePath}`;
@@ -65,7 +66,7 @@ const readJson = (filePath) => {
 };
 
 const readMarkdown = (filePath) => {
-    filePath = `./src/content/${filePath}`;
+    filePath = `./src/pages/${filePath}`;
     console.log('read md: ' + filePath);
     try {
         const { data, content } = matter(fs.readFileSync(filePath, 'utf8'));
@@ -83,13 +84,20 @@ const readMarkdown = (filePath) => {
     }
 };
 
-const blog_pages = getAllMarkdownFiles('./src/content/blog')
+const blog_pages = getAllMarkdownFiles('./src/pages')
     .map(x => {
-        const path = x.replace('src/content/', '').replace('.md', '.html');
-        const { data, content } = readMarkdown(x.replace('src/content/', ''));
+        const path = x.replace('src/pages/', '').replace('.md', '.html');
+        const { data, content } = readMarkdown(x.replace('src/pages/', ''));
+        let template;
+
+        if(typeof data.page_type != "undefined") {
+            template = `./src/pages/_types/${data.page_type}.ejs`;
+        } else {
+            template = './src/pages/_types/blog-post.ejs';
+        }
 
         return {
-            template: './src/pages/blog-post.ejs',
+            template,
             filename: `./${path}`,
             data,
             inject: "body",
@@ -103,6 +111,7 @@ const blog_pages = getAllMarkdownFiles('./src/content/blog')
                     path
                 },
                 path,
+                markdown_path: x.replace('src/pages/', ''),
                 readJson,
                 readMarkdown,
                 R
@@ -112,7 +121,6 @@ const blog_pages = getAllMarkdownFiles('./src/content/blog')
 
 // Manually update time on pages to live reload HTML based on JSON updates
 fs.watch("./src/json/", (eventType, filename) => {
-    conole.log("json-fire");
     if (filename && filename.endsWith('.json')) {
         const filePath = path.join("./src/json/", filename);
         const jsonData = readJson(filePath);
@@ -130,10 +138,10 @@ fs.watch("./src/json/", (eventType, filename) => {
 });
 
 // Manually update time on pages to live reload HTML based on JSON updates
-fs.watch("./src/content", { recursive: true }, (eventType, filename) => {
+fs.watch("./src/pages", { recursive: true }, (eventType, filename) => {
     console.log('markdown-fire');
     if (filename && filename.endsWith('.md')) {
-        const filePath = path.join("./src/content/", filename);
+        const filePath = path.join("./src/pages/", filename);
         const markdownData = readMarkdown(filePath);
         if (markdownData) {
             try {
@@ -230,6 +238,7 @@ module.exports = {
                         path: `${filename}.html`
                     },
                     path: `${filename}.html`,
+                    markdown_path: "",
                     readJson,
                     readMarkdown,
                     getAllMarkdownFiles,

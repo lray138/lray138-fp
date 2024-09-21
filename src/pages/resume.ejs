@@ -1,0 +1,26 @@
+<%
+	var posts_list_items = getAllMarkdownFiles('./src/pages/resume')
+		.map(x => {
+			const path = x.replace('src/pages/', '/').replace('.md', '.html');
+        	const { data, content } = readMarkdown(x.replace('src/pages/', ''));
+        	return require("/partials/resume/list-item.ejs")({
+        		...data,
+        		href: path,
+        		content
+        	})
+		})
+		.join('');
+%>
+
+<%- require("/views/main.ejs")({
+	site,
+	page: {
+		title: "Blog Landing",
+		path
+	},
+	header: {...readJson("header.json"), current_page: page},
+	content:
+		`<div style="text-align: center"><h1>Resume</h1></div><section><ul>${posts_list_items}</ul></section>`
+})
+
+%>
