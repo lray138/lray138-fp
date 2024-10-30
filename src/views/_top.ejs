@@ -1,13 +1,14 @@
 <%
     var head = typeof head != "undefined" ? head : "";
 	var header = typeof header != "undefined" ? header : "";
+    var site_name = typeof site_name != "undefined" ? site_name + " | ": "";
 %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>SiteName | Home</title>
+        <title><%- site_name %>Home</title>
         <script src="/assets/js/vendor/surreal.js"></script>
         <script src="/assets/js/vendor/css-inline-scope.js"></script>
         <script src="/assets/js/vendor/ramda.min.js"></script>

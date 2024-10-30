@@ -1,8 +1,6 @@
 <%
 	var mdpath = typeof path != "undefined" ? path.replace(".html", ".md") : "blog/post-1.md";
 	let { data, content } = readMarkdown(mdpath);
-	// Convert Markdown to HTML
-	// dconst content = marked(markdownContent);
 %>
 <%- require("/views/blog-post.ejs")({
 	site: readJson("site.json"),

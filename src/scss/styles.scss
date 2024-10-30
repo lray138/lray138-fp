@@ -1,4 +1,15 @@
-@import "global.css";
+@import "cssbed/astro-bear.css";
+//@import "cssbed/marx.css";
+
+@import "form-defaults";
+
+// Define Sass variables
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1200px;
+
 
 //@import "~flatpickr/dist/flatpickr.min.css";
 
@@ -69,5 +80,7 @@ pre code .comment {
 }
 
 .copy-btn:active {
-    background-color: rgba(0, 68, 148, 0.8); /* Semi-transparent active effect */
+  background-color: rgba(0, 68, 148, 0.8); /* Semi-transparent active effect */
 }
+
+// @import "offcanvas-menu.scss";

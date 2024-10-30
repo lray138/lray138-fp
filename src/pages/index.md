@@ -3,7 +3,7 @@ page_type: "basic"
 title: "This is Bravesf"
 ---
 
-# Continuum
+# Vanilla Webpack
 
 I went to the Atlanta Tech Village's Mason St. location yesterday (Sept 18th, 2024) with the intent of doing a "brain dump" with everything I've been up to the past few years, and where I want to go.
 

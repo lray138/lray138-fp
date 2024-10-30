@@ -1,7 +1,5 @@
 <%
 	let { data, content } = readMarkdown(markdown_path);
-	// Convert Markdown to HTML
-	// dconst content = marked(markdownContent);
 %>
 <%- require("/views/main.ejs")({
 	site: readJson("site.json"),
@@ -12,6 +10,5 @@
 	header: {...readJson("header.json"), current_page: page, name: site.name + "asdf"},
 	content,
 	data
-})
-
+});
 %>

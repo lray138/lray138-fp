@@ -8,14 +8,16 @@
        class_list += " active";
     }
 %>
-<a href="<%= href %>" class="<%= class_list %>"><%- text %> </a>
+<a href="<%= href %>" class="<%= class_list %>">
+  <%- text %>
+</a>
 <style>
-  a {
-    display: inline-block;
-    text-decoration: none;
-  }
-  a.active {
-    font-weight: bolder;
-    text-decoration: underline;
-  }
-</style>
+    a {
+      display: inline-block;
+      text-decoration: none;
+    }
+    a.active {
+      font-weight: bolder;
+      text-decoration: underline;
+    }
+  </style>

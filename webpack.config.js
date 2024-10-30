@@ -7,83 +7,9 @@ const R = require('ramda');
 const { marked } = require('marked');
 const matter = require('gray-matter');
 
-// array of pages from the './src/pages' directory
-// const pages = R.map(R.replace(".ejs", ""))(fs.readdirSync("./src/pages/").filter(R.endsWith(".ejs")));
-
-// Function to recursively get all .ejs files
-const getAllEjsFiles = (dir) => {
-    let results = [];
-
-    const list = fs.readdirSync(dir);
-
-    list.forEach((file) => {
-        const fullPath = path.join(dir, file);
-        const stat = fs.statSync(fullPath);
-        if (stat && stat.isDirectory()) {
-            results = results.concat(getAllEjsFiles(fullPath)); // Recurse into subdirectory
-        } else if (file.endsWith('.ejs')) {
-            results.push(fullPath); // Add .ejs file to results
-        }
-    });
-
-    return results;
-};
+const { getAllEjsFiles, readJson, getAllMarkdownFiles, readMarkdown  } = require('./src/utils/filesystem');
 
 const pages = getAllEjsFiles('./src/pages/');
-
-// Function to recursively get all .ejs files
-const getAllMarkdownFiles = (dir) => {
-    let results = [];
-
-    const list = fs.readdirSync(dir);
-
-    list.forEach((file) => {
-        const fullPath = path.join(dir, file);
-        const stat = fs.statSync(fullPath);
-        if (stat && stat.isDirectory()) {
-            results = results.concat(getAllMarkdownFiles(fullPath)); // Recurse into subdirectory
-        } else if (file.endsWith('.md')) {
-            results.push(fullPath); // Add .ejs file to results
-        }
-    });
-
-    return results;
-};
-
-
-// read JSON data 
-const readJson = (filePath) => {
-    filePath = `./src/json/${filePath}`;
-    try {
-        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    } catch (err) {
-        if (err.code === 'ENOENT') {
-            return 'JSON not found'; // make it obvious if the path is wrong
-        } else {
-            return ''; // Return empty string for other errors
-        }
-    }
-};
-
-const readMarkdown = (filePath) => {
-    filePath = `./src/pages/${filePath}`;
-    console.log('read md: ' + filePath);
-    try {
-        const { data, content } = matter(fs.readFileSync(filePath, 'utf8'));
-        return {
-            data,
-            content: marked(content)
-        };
-    } catch (err) {
-        if (err.code === 'ENOENT') {
-            return 'Markdown file not found'; // make it obvious if the path is wrong
-        } else {
-            console.log(err);
-            return ''; // Return empty string for other errors
-        }
-    }
-};
-
 const blog_pages = getAllMarkdownFiles('./src/pages')
     .map(x => {
         const path = x.replace('src/pages/', '').replace('.md', '.html');
@@ -120,9 +46,9 @@ const blog_pages = getAllMarkdownFiles('./src/pages')
     });
 
 // Manually update time on pages to live reload HTML based on JSON updates
-fs.watch("./src/json/", (eventType, filename) => {
+fs.watch("./src/data/", (eventType, filename) => {
     if (filename && filename.endsWith('.json')) {
-        const filePath = path.join("./src/json/", filename);
+        const filePath = path.join("./src/data/", filename);
         const jsonData = readJson(filePath);
         if (jsonData) {
             try {
