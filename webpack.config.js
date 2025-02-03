@@ -94,7 +94,7 @@ function addNameToClassList(base_class_list) {
 
 module.exports = {
     entry: [
-        "./src/js/scripts.js",
+        "./src/js/index.js",
         "./src/scss/styles.scss"
     ],
     module: {
@@ -113,6 +113,11 @@ module.exports = {
                 generator: {
                     filename: 'assets/fonts/[name][ext]',
                 },
+            },
+            {
+                test: /\.ts$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
             },
             {
             test: /\.(s?css)$/,
@@ -186,10 +191,10 @@ module.exports = {
                 from: './src/css',
                 to: './assets/css',
             },
-            {
-                from: 'src/js/vendor', 
-                to: 'assets/js/vendor' 
-            }
+            // {
+            //     from: 'src/js/vendor', 
+            //     to: 'assets/js/vendor' 
+            // }
           ],
         }),
     ],
@@ -202,9 +207,10 @@ module.exports = {
         hot: true
     },
     resolve: {
-      roots: [
-         path.resolve(__dirname, 'src'),
-         path.resolve(__dirname, 'node_modules')
-      ]
+        extensions: ['.ts', '.js'],
+        roots: [
+             path.resolve(__dirname, 'src'),
+             path.resolve(__dirname, 'node_modules')
+        ]
    }
 };
