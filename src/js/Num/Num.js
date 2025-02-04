@@ -20,9 +20,13 @@ export default class Num extends Gonad {
 		return this.map(v => v - x);
 	}
 
-	// mul(x) {
-	// 	return this.map(v => v * x);
-	// }
+	mul(x) {
+		return this.map(v => v * x);
+	}
+
+	div(x) {
+		return this.map(v => v / x);
+	}
 
 	map(f) {
 		return new Proxy(new Num(f(this.extract())), numProxy);

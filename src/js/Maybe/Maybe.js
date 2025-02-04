@@ -2,6 +2,10 @@ import Gonad from '../Gonad.js';
 
 export default class Maybe extends Gonad {
 
+	extract() {
+		return this.value;
+	}
+
 	constructor() {
     	super();
     	if (new.target === Maybe) {

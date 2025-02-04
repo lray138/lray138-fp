@@ -41,7 +41,6 @@ export const numProxy = {
 	    },
 	  };
 
-
 export function Num(value) {
 	return new Proxy(N.of(value), numProxy);
 }

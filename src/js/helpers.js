@@ -6,7 +6,7 @@
 import { Num, numProxy } from './Num/factory.js';
 import { Str } from './Str/factory.js';
 
-export default function wrapType(value) {
+export function wrapType(value) {
     
     switch (typeof value) {
 

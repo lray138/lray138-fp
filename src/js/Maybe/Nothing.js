@@ -14,6 +14,10 @@ export default class Nothing extends Maybe {
   		return this;
   	}
 
+  	extract() {
+  		return null;
+  	}
+
   	static of(value) {
     	return new Nothing(value);
   	}

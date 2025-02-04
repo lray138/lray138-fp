@@ -4,7 +4,7 @@
 // there was a thought of why not put everythign in a try catch?
 
 import { default as S } from './Str.js';
-import wrapType from '../wrapType.js';
+import { wrapType } from '../helpers.js';
 
 export function Str(value) {
 
