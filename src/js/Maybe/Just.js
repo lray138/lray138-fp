@@ -8,14 +8,26 @@ export default class Just extends Maybe {
   	}
 
   	map(f) {
-  		return this.of(f(this.extract()))
+  		return Just.of(f(this.extract()))
   	}
 
   	bind(f) {
   		return f(this.extract());
   	}
 
-  	static of(value) {
+  	ap(v) {
+  		return v.map(this.extract());
+  	}
+
+  	fork(_, r) {
+  		return r(this.extract());
+  	}
+
+  	extend(f) {
+  		return f(this);
+  	}
+
+  	static unit(value) {
     	return new Just(value);
   	}
 

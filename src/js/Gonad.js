@@ -4,11 +4,14 @@
 // there was a thought of why not put everythign in a try catch?
 
 export default class Gonad {
-
   constructor() {
     if (new.target === Gonad) {
       throw new Error("Gonad is an abstract class and cannot be instantiated directly.");
     }
+  }
+
+  map(f) {
+    throw new Error("'map' function must be implemented by subtype");
   }
 
   bind(f) {
@@ -40,10 +43,6 @@ export default class Gonad {
     return v == null ? x : v;
   }
 
-  map(f) {
-    throw new Error("'map' function must be implemented by subtype");
-  }
-
   fork(l, r) {
     throw new Error("'fork' function must be implemented by subtype");
   }
@@ -56,15 +55,15 @@ export default class Gonad {
     return this.fork(l, r);
   }
 
-  unit(v) {
+  static unit(v) {
     throw new Error("unit must be implemented by subtype");
   }
 
-  of(v) {
+  static of(v) {
     return this.unit(v);
   }
 
-  pure(v) {
+  static pure(v) {
     return this.unit(v);
   }
 
@@ -73,7 +72,12 @@ export default class Gonad {
   }
 
   ap(x) {
+    throw new Error("'ap' must be implemented by subtype.");
+  }
 
+  // need this for testing due to Proxy
+  type() {
+    return this.constructor.name;
   }
 
 }

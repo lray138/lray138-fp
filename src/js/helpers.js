@@ -5,21 +5,72 @@
 
 import { Num, numProxy } from './Num/factory.js';
 import { Str } from './Str/factory.js';
+import { Left } from './Either/factory.js';
+import { Nothing } from './Maybe/factory.js';
 
 export function wrapType(value) {
     
     switch (typeof value) {
 
       case 'number':
-          return new Proxy(Num(value), numProxy);
+          return Num(value)
           break;
 
       case 'string':
-          return Str(value);
+          return Str(value)
           break;
 
     }
 
     return value;
+}
 
+export const proxy = {
+    get(target, prop) {
+
+      const call = {
+        Nothing,
+        Left
+      };
+
+      const value = target.extract();
+      const prototype = value == null 
+        ? call[target.type()]()
+        : Object.getPrototypeOf(value);
+      
+        try {
+
+            if (typeof target[prop] === 'function') {
+                return function (...args) {
+                    return target[prop](...args);
+                };
+            }
+
+            if (prop in prototype) {
+                return typeof prototype[prop] === 'function'
+                    ? (...args) => wrapType(target.bind(x => x[prop](...args)))
+                    : wrapType(target.bind(x => x[prop]));
+            }
+
+            return value[prop] == null 
+              ? (target.type() == "Just" 
+                ? () => Nothing()
+                : () => Left(`'${prop}' not found.`))
+              : () => wrapType(value[prop]);
+
+        } catch (error) {
+            console.error("Error in Proxy get trap:", error);
+        }
+    
+    },
+
+    // set(target, prop, value) {
+    //   console.log(`Setting property ${prop} to`, value);
+    //   target[prop] = value;
+    //   return true;
+    // },
+};
+
+export function proxyWrap(x) {
+    return new Proxy(x, proxy);
 }

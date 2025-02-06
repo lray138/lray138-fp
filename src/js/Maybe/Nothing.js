@@ -14,11 +14,23 @@ export default class Nothing extends Maybe {
   		return this;
   	}
 
+  	ap() {
+  		return this;
+  	}
+
+  	fork(f, _) {
+  		return f();
+  	}
+
   	extract() {
   		return null;
   	}
 
-  	static of(value) {
-    	return new Nothing(value);
+  	extend() {
+  		return this;
+  	}
+
+  	static unit() {
+    	return new Nothing();
   	}
 }

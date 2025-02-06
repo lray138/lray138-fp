@@ -4,19 +4,36 @@
 // there was a thought of why not put everythign in a try catch?
 
 import Gonad from '../Gonad.js';
+import { Left } from '../Either/factory.js';
+import { proxyWrap } from '../helpers.js';
 
 export default class Str extends Gonad {
 
-	static of(value) {
+	charAt(x) {
+		let char = this.extract().charAt(x);
+		return char == false
+			? Left('no character found at index ' + x)
+			: new Proxy(Str.unit(char), proxy);
+	}
+
+	append(x) {
+		return proxyWrap(new Str(this.extract() + x));
+	}
+
+	prepend(x) {
+		return proxyWrap(new Str(x + this.extract()));
+	}
+
+	static unit(value) {
 		return new Str(value);
 	}
 
 	map(f) {
-		return new Str(f(this.extract()));
+		return proxyWrap(new Str(f(this.extract())));
 	}
 
 	bind(f) {
-		return f(this.extract());
+		return this.map(f).join();
 	}
 
 	extract() {
