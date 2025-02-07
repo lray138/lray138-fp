@@ -3,6 +3,7 @@
 // I guess we could use tryCatch 
 // there was a thought of why not put everythign in a try catch?
 
+
 export default class Gonad {
   constructor() {
     if (new.target === Gonad) {

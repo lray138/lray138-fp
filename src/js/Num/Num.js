@@ -4,7 +4,7 @@
 // there was a thought of why not put everythign in a try catch?
 
 import Gonad from '../Gonad.js';
-import { numProxy } from './factory.js';
+import { proxyWrap } from '../helpers.js';
 
 export default class Num extends Gonad {
 
@@ -29,7 +29,7 @@ export default class Num extends Gonad {
 	}
 
 	map(f) {
-		return new Proxy(new Num(f(this.extract())), numProxy);
+		return proxWrap(new Num(f(this.extract())));
 	}
 
 	extract() {

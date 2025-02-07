@@ -3,7 +3,7 @@
 // I guess we could use tryCatch 
 // there was a thought of why not put everythign in a try catch?
 
-import { Num, numProxy } from './Num/factory.js';
+import { Num } from './Num/factory.js';
 import { Str } from './Str/factory.js';
 import { Left } from './Either/factory.js';
 import { Nothing } from './Maybe/factory.js';

@@ -4,8 +4,8 @@
 // there was a thought of why not put everythign in a try catch?
 
 import { default as S } from './Str.js';
-import { proxy } from '../helpers.js';
+import { proxyWrap } from '../helpers.js';
 
 export function Str(value) {
-  return new Proxy(S.of(value), proxy);
+  return proxyWrap(S.of(value));
 }

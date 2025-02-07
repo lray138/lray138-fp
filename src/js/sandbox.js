@@ -10,4 +10,3 @@ import {Arr} from './Arr/factory.js';
 import {Task} from './Task/factory.js';
 
 console.log('alrighty then!');
-

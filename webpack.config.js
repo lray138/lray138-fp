@@ -7,15 +7,11 @@
 // const { marked } = require('marked');
 // const matter = require('gray-matter');
 
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CopyPlugin from 'copy-webpack-plugin';
 import path from 'path';
 import fs from 'fs';
-import * as R from 'ramda';
-import { marked } from 'marked';
-import matter from 'gray-matter';
 import { fileURLToPath } from 'url';
+
+import TerserPlugin from 'terser-webpack-plugin';
 
 const __dirname = fileURLToPath(import.meta.url);
 
@@ -24,8 +20,10 @@ export default {
         "./src/js/index.js",
     ],
     output: {
-        filename: './assets/js/[name].bundle.js',
-        clean: true
+        filename: './[name].bundle.js',
+        clean: true,
+        library: 'lray138fp',  // This is the global name of your library
+        libraryTarget: 'umd',    // This allows it to work in multiple environments (CJS, AMD, global)
     },
     devServer: {
         watchFiles: 'src/**/*',
@@ -37,5 +35,18 @@ export default {
              path.resolve(__dirname, 'src'),
              path.resolve(__dirname, 'node_modules')
         ]
-   }
+   },
+   optimization: {
+        minimize: true, // Ensure minification is active
+        minimizer: [
+          new TerserPlugin({
+            terserOptions: {
+              mangle: {
+                reserved: ['Boo', 'Future', 'Maybe', 'Just', 'Nothing', 'Either', 'Right', 'Left', 'Arr', 'Str', 'Num', 'Task', 'proxyWrap'], // Prevent renaming these function names
+              },
+              // keep_fnames: true, // Ensure that function names are preserved during minification
+            },
+          }),
+        ],
+    },
 };

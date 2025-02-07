@@ -1,15 +1,16 @@
 import { default as R } from './Right.js'; // Import Just as J
 import { default as L } from './Left.js'; // Import Nothing as N
-import { proxy } from '../helpers.js';
+import { proxyWrap } from '../helpers.js';
 
 export function Either(value, message) {
+	if (message == null) message = '';
 	return value == null ? Left(message) : Right(value); 
 }
 
 export function Right(value) {
-	return new Proxy(new R(value), proxy);
+	return proxyWrap(new R(value));
 }
 
 export function Left(value) {
-	return new Proxy(new L(value), proxy);
+	return proxyWrap(new L(value));
 }

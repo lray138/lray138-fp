@@ -1,15 +1,15 @@
 import { default as J } from './Just.js'; // Import Just as J
 import { default as N } from './Nothing.js'; // Import Nothing as N
-import { proxy } from '../helpers.js';
+import { proxyWrap } from '../helpers.js';
 
 export function Maybe(value) {
 	return value == null ? Nothing() : Just(value); 
 }
 
 export function Just(value) {
-	return new Proxy(new J(value), proxy);
+	return proxyWrap(new J(value));
 }
 
 export function Nothing() {
-	return new Proxy(new N(), proxy);
+	return proxyWrap(new N());
 }

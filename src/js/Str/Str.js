@@ -13,7 +13,7 @@ export default class Str extends Gonad {
 		let char = this.extract().charAt(x);
 		return char == false
 			? Left('no character found at index ' + x)
-			: new Proxy(Str.unit(char), proxy);
+			: proxyWrap(Str.unit(char));
 	}
 
 	append(x) {
@@ -44,5 +44,10 @@ export default class Str extends Gonad {
 		super();
 		this.value = value;
 	}
+
+	dump() {
+    	console.log(this.extract());
+    	return proxyWrap(this);
+  	}
 
 }
