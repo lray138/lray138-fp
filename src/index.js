@@ -11,16 +11,22 @@ import { Num } from './Num/factory.js';
 import { Task } from './Task/factory.js';
 import { Future } from './Future/factory.js';
 import { Boo } from './Boo/factory.js';
-import { proxyWrap } from './helpers.js';
+import { Reader } from './Reader/factory.js';
+import { Writer } from './Writer/factory.js';
 
-export { Future, Boo, Maybe, Just, Nothing, Either, Right, Left, Arr, Str, Num, Task, proxyWrap };
-
-// import { default as S } from './Str/Str.js';
-// export function Str2(value) {
-// 	return proxyWrap(S.unit(value));
-// }
-
-// import { default as J } from './Maybe/Just.js';
-// export function Just(value) {
-// 	return proxyWrap(J.unit(value));
-// }
+export { 
+	Arr,
+	Boo,
+	Future, 
+	Maybe, 
+		Just, 
+		Nothing,
+	Num,
+	Either,
+		Left, 
+		Right,
+	Str,
+	Task,
+	Reader,
+	Writer
+};

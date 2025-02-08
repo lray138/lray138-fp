@@ -17,12 +17,12 @@ const __dirname = fileURLToPath(import.meta.url);
 
 export default {
     entry: [
-        "./src/js/index.js",
+        "./src/index.js",
     ],
     output: {
         filename: './[name].bundle.js',
         clean: true,
-        library: 'lray138fp',  // This is the global name of your library
+        library: 'lray138_fp',  // This is the global name of your library
         libraryTarget: 'umd',    // This allows it to work in multiple environments (CJS, AMD, global)
     },
     devServer: {
@@ -42,7 +42,22 @@ export default {
           new TerserPlugin({
             terserOptions: {
               mangle: {
-                reserved: ['Boo', 'Future', 'Maybe', 'Just', 'Nothing', 'Either', 'Right', 'Left', 'Arr', 'Str', 'Num', 'Task', 'proxyWrap'], // Prevent renaming these function names
+                reserved: [
+                    'Arr',
+                    'Boo',
+                    'Future',
+                    'Task',
+                    'Maybe', 
+                        'Just', 
+                        'Nothing', 
+                    'Either', 
+                        'Right', 
+                        'Left',
+                    'Num', 
+                    'Reader',
+                    'Str',
+                    'Writer'
+                ], // Prevent renaming these function names
               },
               // keep_fnames: true, // Ensure that function names are preserved during minification
             },
