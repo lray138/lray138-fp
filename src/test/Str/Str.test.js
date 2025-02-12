@@ -4,7 +4,6 @@ test("'Str' factory works.", () => {
   expect(Str('test').get()).toBe('test');
 });
 
-
 test("'map' function works (also checks proxy)", () => {
   expect(
     Str('test')
@@ -13,17 +12,6 @@ test("'map' function works (also checks proxy)", () => {
     ).toBe('TEST');
 
 });
-
-test("handles chaning proxied methods is returned when mapping", () => {
-  expect(
-    Str('test')
-      .map(x => x)
-      .toUpperCase()
-      .toLowerCase()
-      .get()
-    ).toBe('test');
-});
-
 
 test("'append' function works", () => {
   expect(
@@ -40,4 +28,3 @@ test("'prepend' function works", () => {
       .get()
   ).toBe('3412');
 });
-

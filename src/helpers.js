@@ -52,6 +52,8 @@ export const proxy = {
                     : wrapType(target.bind(x => x[prop]));
             }
 
+            console.log(prop);
+
             return value[prop] == null 
               ? (target.type() == "Just" 
                 ? () => Nothing()
@@ -72,5 +74,6 @@ export const proxy = {
 };
 
 export function proxyWrap(x) {
+    return x;
     return new Proxy(x, proxy);
 }

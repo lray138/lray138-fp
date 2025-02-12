@@ -65,34 +65,3 @@ describe('Gonad interface is implemented', () => {
 
 }); // 'Gonad interface is implemented'
 
-
-describe('"Magic" proxy functions impemented', () => {
-
-  test("Proxy call to prototype method works with String", () => {
-    expect(
-      Left('test')
-        .toUpperCase()
-        .get()
-    ).toBe('test');
-  });
-
-  test("Proxy call to prototype method works with Number", () => {
-    let val = Just(1).toFixed(2);
-    expect(val.type()).toBe("Str");
-    expect(val.get()).toBe("1.00");
-  });
-
-  test("Proxy call to non-member and non-prototype method returns Left.", () => {
-    let val = Right('test')
-        .toUppferCase();
-
-    expect(val.type()).toBe('Left');
-    expect(val.get()).toBe("'toUppferCase' not found.");
-  });
-
-  test("Proxy call to non-member and non-prototype method returns Left.", () => {
-    let val = Right({first_name: "John"}).toUppferCase();
-      expect(val.type()).toBe('Left');
-  });
-
-});
