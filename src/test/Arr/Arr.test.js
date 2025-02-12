@@ -68,3 +68,11 @@ describe('Gonad interface is implemented', () => {
 }); // 'Gonad interface is implemented'
 
 
+
+test('call', () => {
+  let a = Arr({
+    "prop": "a"
+  }).prop("prop").get()
+
+  expect(a).toBe("a");
+})

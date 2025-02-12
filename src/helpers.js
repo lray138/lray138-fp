@@ -5,10 +5,16 @@
 
 import { Num } from './Num/factory.js';
 import { Str } from './Str/factory.js';
-import { Left } from './Either/factory.js';
+import { Right, Left } from './Either/factory.js';
 import { Nothing } from './Maybe/factory.js';
 
+import Gonad from './Gonad.js'
+
 export function wrapType(value) {
+
+    if(value instanceof Gonad) {
+        return value;
+    }
     
     switch (typeof value) {
 
@@ -22,7 +28,7 @@ export function wrapType(value) {
 
     }
 
-    return value;
+    return Right(value);
 }
 
 export const proxy = {
