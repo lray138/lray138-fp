@@ -32,7 +32,7 @@ export default class Arr extends Gonad {
 
 		let o = Array.isArray(x)
 			? x.map(f)
-			: Object.values(x).map(f);
+			: Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]));
 
 		return new Proxy(new Arr(o), proxy);
 	}

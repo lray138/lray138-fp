@@ -61,5 +61,12 @@ describe('Gonad interface is implemented', () => {
     ).toBe("Right");
   });
 
+  test("'goe' function works.", () => {
+    expect(
+      Right(5)
+        .goe('else')
+    ).toBe(5);
+  });
+
 }); // 'Gonad interface is implemented'
 

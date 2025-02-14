@@ -5,6 +5,7 @@
 
 import { Num } from './Num/factory.js';
 import { Str } from './Str/factory.js';
+import { Arr } from './Arr/factory.js';
 import { Right, Left } from './Either/factory.js';
 import { Nothing } from './Maybe/factory.js';
 
@@ -25,6 +26,10 @@ export function wrapType(value) {
       case 'string':
           return Str(value)
           break;
+
+        case 'object':
+            return Array.isArray(value) ? Arr(value) : Right(value);
+            break;
 
     }
 
@@ -58,8 +63,6 @@ export const proxy = {
                     : wrapType(target.bind(x => x[prop]));
             }
 
-            console.log(prop);
-
             return value[prop] == null 
               ? (target.type() == "Just" 
                 ? () => Nothing()
@@ -80,6 +83,19 @@ export const proxy = {
 };
 
 export function proxyWrap(x) {
-    return x;
     return new Proxy(x, proxy);
+}
+
+export function curry(fn) {
+    const arity = fn.length;
+
+    return function curried(...args) {
+        if (args.length >= arity) {
+            return fn.apply(this, args);
+        } else {
+            return function(...nextArgs) {
+                return curried.apply(this, args.concat(nextArgs));
+            };
+        }
+    };
 }

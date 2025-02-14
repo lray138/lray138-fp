@@ -13,8 +13,14 @@ import { Future } from './Future/factory.js';
 import { Boo } from './Boo/factory.js';
 import { Reader } from './Reader/factory.js';
 import { Writer } from './Writer/factory.js';
+import { 
+	getElementById, 
+	querySelector, 
+	querySelectorAll,
+	addEventListener
+} from './DOM.js';
 
-export { 
+export {
 	Arr,
 	Boo,
 	Future, 
@@ -28,5 +34,9 @@ export {
 	Str,
 	Task,
 	Reader,
-	Writer
+	Writer,
+	getElementById,
+	querySelector,
+	querySelectorAll,
+	addEventListener
 };

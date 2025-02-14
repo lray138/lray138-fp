@@ -11,10 +11,24 @@ describe('Gonad interface is implemented', () => {
   
   test("'map' function works.", () => {
       expect(
-        Arr('test')
+        Arr(['test'])
           .map(x => x.toUpperCase())
           .get()
       ).toEqual(['TEST']);
+  });
+
+  test("'map' function works on object", () => {
+      expect(
+        Arr({
+          first: "John",
+          last: "Smith"
+        })
+          .map(x => x.toUpperCase())
+          .get()
+      ).toEqual({
+        first: "JOHN",
+        last: "SMITH"
+      });
   });
 
   test("'bind' function works.", () => {

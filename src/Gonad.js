@@ -3,7 +3,7 @@
 // I guess we could use tryCatch 
 // there was a thought of why not put everythign in a try catch?
 
-
+// love that that comment is up there before calling this "Gonad"
 export default class Gonad {
   constructor() {
     if (new.target === Gonad) {
@@ -42,6 +42,10 @@ export default class Gonad {
   getOrElse(x) {
     let v = this.extract();
     return v == null ? x : v;
+  }
+
+  goe(v) {
+    return this.getOrElse(v);
   }
 
   fork(l, r) {

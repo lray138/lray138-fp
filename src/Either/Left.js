@@ -11,6 +11,10 @@ export default class Left extends Either {
 		return this;
 	}
 
+	getOrElse(v) {
+		return v;
+	}
+
 	static unit(val) {
 		return new Left(val);
 	}
