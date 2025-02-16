@@ -40,6 +40,10 @@ export default class Str extends Gonad {
 		return this.value;
 	}
 
+	eq(v) {
+		return this.extract() == v;
+	}
+
 	constructor(value) {
 		super();
 		this.value = value;

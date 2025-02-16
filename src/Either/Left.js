@@ -35,6 +35,10 @@ export default class Left extends Either {
 		return this;
 	}
 
+	eq(v) {
+		return false;
+	}
+
 	constructor(value) {
     	super();
     	this.value = value;

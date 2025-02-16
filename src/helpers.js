@@ -10,6 +10,7 @@ import { Right, Left } from './Either/factory.js';
 import { Nothing } from './Maybe/factory.js';
 
 import Gonad from './Gonad.js'
+import { type } from 'os';
 
 export function wrapType(value) {
 
@@ -45,10 +46,12 @@ export const proxy = {
       };
 
       const value = target.extract();
+
       const prototype = value == null 
         ? call[target.type()]()
         : Object.getPrototypeOf(value);
-      
+
+    
         try {
 
             if (typeof target[prop] === 'function') {
@@ -56,11 +59,12 @@ export const proxy = {
                     return target[prop](...args);
                 };
             }
-
+    
             if (prop in prototype) {
-                return typeof prototype[prop] === 'function'
+
+                return typeof value[prop] === 'function'
                     ? (...args) => wrapType(target.bind(x => x[prop](...args)))
-                    : wrapType(target.bind(x => x[prop]));
+                    : () => target.bind(x => wrapType(x[prop]));
             }
 
             return value[prop] == null 
@@ -70,9 +74,9 @@ export const proxy = {
               : () => wrapType(value[prop]);
 
         } catch (error) {
-            console.error("Error in Proxy get trap:", error);
+            return Left(error.message);
         }
-    
+
     },
 
     // set(target, prop, value) {

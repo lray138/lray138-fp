@@ -29,7 +29,15 @@ export default class Num extends Gonad {
 	}
 
 	map(f) {
-		return proxWrap(new Num(f(this.extract())));
+		return proxyWrap(new Num(f(this.extract())));
+	}
+
+	bind(f) {
+		return this.map(f).join();
+	}
+
+	eq(v) {
+		return this.extract() == v;
 	}
 
 	extract() {
