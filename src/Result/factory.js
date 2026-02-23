@@ -1,13 +1,16 @@
-import { Either, Right, Left } from '../Either/factory.js';
+import O from './Ok.js';
+import E from './Err.js';
+import { proxyWrap } from '../helpers.js';
 
 export function Result(value, message) {
-	return Either(value, message);
+	if (message == null) message = '';
+	return value == null ? Err(message) : Ok(value);
 }
 
 export function Ok(value) {
-	return Right(value);
+	return proxyWrap(new O(value));
 }
 
 export function Err(value) {
-	return Left(value);
+	return proxyWrap(new E(value));
 }

@@ -1,5 +1,5 @@
 import { Result, Ok, Err } from "../../Result/factory.js";
-import Either from "../../Either/Either.js";
+import ResultClass from "../../Result/Result.js";
 
 test("'Result' factory returns Ok/Err semantics.", () => {
 	expect(
@@ -18,8 +18,8 @@ test("'Result' factory returns Ok/Err semantics.", () => {
 });
 
 test("'Ok' and 'Err' helpers work.", () => {
-	expect(Ok("value")).toBeInstanceOf(Either);
-	expect(Err("problem")).toBeInstanceOf(Either);
+	expect(Ok("value")).toBeInstanceOf(ResultClass);
+	expect(Err("problem")).toBeInstanceOf(ResultClass);
 
 	expect(
 		Ok("value").fork(

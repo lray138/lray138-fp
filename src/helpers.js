@@ -38,7 +38,6 @@ export function wrapType(value) {
 
 export const proxy = {
     get(target, prop) {
-
       const call = {
         Nothing,
         Left
