@@ -5,7 +5,7 @@
 
 import { Num } from './Num/factory.js';
 import { Str } from './Str/factory.js';
-import { Arr } from './Arr/factory.js';
+import { Lst } from './Lst/factory.js';
 import { Right, Left } from './Either/factory.js';
 import { Nothing } from './Maybe/factory.js';
 
@@ -28,7 +28,7 @@ export function wrapType(value) {
           break;
 
         case 'object':
-            return Array.isArray(value) ? Arr(value) : Right(value);
+            return Array.isArray(value) ? Lst(value) : Right(value);
             break;
 
     }

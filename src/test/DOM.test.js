@@ -9,10 +9,11 @@ import {
     querySelector,
     querySelectorAll,
     querySelectorWithin
-} from "../DOM.js";
+} from "../Dom.js";
+import Dom from "../Dom.js";
 
 import Either from '../Either/Either.js';
-import Lst from '../Arr/Lst.js';
+import Lst from '../Lst/Lst.js';
 
 describe('getElementById Tests', () => {
     beforeEach(() => {
@@ -69,6 +70,18 @@ describe('querySelector Tests', () => {
             )
         ).toBe("Quoteable");
 
+    });
+
+    test('class API works: Dom.querySelector', () => {
+        let el = Dom.querySelector('.quote');
+
+        expect(el).toBeInstanceOf(Either);
+        expect(
+            el.fork(
+                x => "not found",
+                x => x.innerHTML
+            )
+        ).toBe("Quoteable");
     });
 
     test('returns Left when element is missing', () => {

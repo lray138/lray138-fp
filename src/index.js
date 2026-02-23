@@ -5,13 +5,16 @@
 
 import { Maybe, Just, Nothing } from './Maybe/factory.js';
 import { Either, Right, Left } from './Either/factory.js';
-import { Arr, Lst, Kvm } from './Arr/factory.js';
+import { Result, Ok, Err } from './Result/factory.js';
+import { Lst } from './Lst/factory.js';
+import { Kvm } from './Kvm/factory.js';
 import { Str } from './Str/factory.js';
 import { Num } from './Num/factory.js';
 import { Task } from './Task/factory.js';
 import { Future } from './Future/factory.js';
 import { Boo } from './Boo/factory.js';
 import { Reader } from './Reader/factory.js';
+import Dom from './Dom.js';
 import { Writer } from './Writer/factory.js';
 import { 
 	getElementById, 
@@ -19,10 +22,9 @@ import {
 	querySelectorAll,
 	querySelectorWithin,
 	addEventListener
-} from './DOM.js';
+} from './Dom.js';
 
 export {
-	Arr,
 	Lst,
 	Kvm,
 	Boo,
@@ -34,7 +36,11 @@ export {
 	Either,
 		Left, 
 		Right,
+	Result,
+		Ok,
+		Err,
 	Str,
+	Dom,
 	Task,
 	Reader,
 	Writer,

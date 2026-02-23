@@ -54,10 +54,16 @@ export default {
                     'Either', 
                         'Right', 
                         'Left',
-                    'Num', 
+                    'Result',
+                        'Ok',
+                        'Err',
+                    'Num',
+                    'Lst',
+                    'Kvm',
                     'Reader',
                     'Str',
                     'Writer',
+                    'Dom',
                     'querySelectorWithin'
                 ], // Prevent renaming these function names
               },

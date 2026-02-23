@@ -1,15 +1,11 @@
-import {Arr, Lst, Kvm} from "../../Arr/factory.js";
+import {Lst} from "../../Lst/factory.js";
+import {Kvm} from "../../Kvm/factory.js";
 import {Just} from "../../Maybe/factory.js";
 
-test("'Arr' factory works.", () => {
-  expect(Arr(['test']).type()).toBe('Arr');
-  expect(Arr(['test']).get()).toEqual(['test']);
+test("'Lst' factory works.", () => {
+  expect(Lst(['test']).type()).toBe('Lst');
+  expect(Lst(['test']).get()).toEqual(['test']);
 
-});
-
-test("'Arr' routes object values to 'Kvm'.", () => {
-  expect(Arr({ test: 'value' }).type()).toBe('Kvm');
-  expect(Arr({ test: 'value' }).get()).toEqual({ test: 'value' });
 });
 
 test("'Lst' and 'Kvm' factories work.", () => {
@@ -19,17 +15,17 @@ test("'Lst' and 'Kvm' factories work.", () => {
 
 describe('Gonad interface is implemented', () => {
   
-  test("'map' function works.", () => {
+  test("'Lst.map' function works.", () => {
       expect(
-        Arr(['test'])
+        Lst(['test'])
           .map(x => x.toUpperCase())
           .get()
       ).toEqual(['TEST']);
   });
 
-  test("'map' function works on object", () => {
+  test("'Kvm.map' function works on object", () => {
       expect(
-        Arr({
+        Kvm({
           first: "John",
           last: "Smith"
         })
@@ -41,29 +37,29 @@ describe('Gonad interface is implemented', () => {
       });
   });
 
-  test("'bind' function works.", () => {
+  test("'Lst.bind' function works.", () => {
     
     expect(
-      Arr(['test'])
+      Lst(['test'])
         .bind(x => Just(x.toUpperCase()))
         .get()
     ).toEqual(['TEST']);
 
   });
 
-  test("'ap' function works.", () => {
+  test("'Lst.ap' function works.", () => {
 
     expect(
-      Arr([x => x.toUpperCase()])
+      Lst([x => x.toUpperCase()])
         .ap(Just('test'))
         .get()
     ).toEqual(['TEST']);
 
   });
 
-  test("'fork' function works.", () => {
+  test("'Lst.fork' function works.", () => {
       expect(
-        Arr('test')
+        Lst('test')
           .fork(
             x => x,
             x => x
@@ -72,10 +68,10 @@ describe('Gonad interface is implemented', () => {
 
   });
 
-  test("'extend' function works.", () => {
+  test("'Lst.extend' function works.", () => {
 
       expect(
-        Arr(['test'])
+        Lst(['test'])
           .extend(x => Just(x))
           .type()
       ).toBe("Just");
@@ -84,9 +80,9 @@ describe('Gonad interface is implemented', () => {
 
   test("'type' function works.", () => {
     expect(
-      Arr(['test'])
+      Lst(['test'])
         .type()
-    ).toBe("Arr");
+    ).toBe("Lst");
   });
 
 }); // 'Gonad interface is implemented'
@@ -94,7 +90,7 @@ describe('Gonad interface is implemented', () => {
 
 
 test('call', () => {
-  let a = Arr({
+  let a = Kvm({
     "prop": "a"
   }).prop("prop").get()
 
