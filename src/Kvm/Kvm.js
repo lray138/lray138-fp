@@ -1,6 +1,7 @@
 import Gonad from '../Gonad.js';
 import { Str } from '../Str/factory.js';
 import { Left } from '../Either/factory.js';
+import { Ok, Err } from '../Result/factory.js';
 import { wrapType, proxy } from '../helpers.js';
 
 export default class Kvm extends Gonad {
@@ -58,6 +59,13 @@ export default class Kvm extends Gonad {
 		}
 
 		return wrapType(current);
+	}
+
+	tryPath(p) {
+		const value = this.path(p);
+		return value.type() === 'Left'
+			? Err(value.extract())
+			: Ok(value);
 	}
 
 	call(f, ...args) {

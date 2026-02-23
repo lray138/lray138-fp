@@ -171,3 +171,35 @@ test("'Kvm.path' returns Left when path does not exist.", () => {
 
   expect(a).toBe('path "/user/address/city" not found');
 });
+
+test("'Kvm.tryPath' returns Ok with wrapped value.", () => {
+  let a = Kvm({
+    some: [
+      { prop: { path: "zero" } },
+      { prop: { path: "one" } },
+      { prop: { path: "two" } }
+    ]
+  }).tryPath("/some[2]/prop/path")
+    .fork(
+      x => x,
+      x => x.type()
+    );
+
+  expect(a).toBe("Str");
+});
+
+test("'Kvm.tryPath' returns Err when path does not exist.", () => {
+  let a = Kvm({
+    user: {
+      profile: {
+        name: "Ada"
+      }
+    }
+  }).tryPath("/user/address/city")
+    .fork(
+      x => x,
+      x => x
+    );
+
+  expect(a).toBe('path "/user/address/city" not found');
+});
