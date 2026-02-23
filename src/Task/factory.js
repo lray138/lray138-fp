@@ -1,6 +1,8 @@
 import { default as T } from './Task.js';
-import { proxy } from '../helpers.js';
 
 export function Task(value) {
-  return T.of(value);
+  return new T(value);
 }
+
+Task.unit = T.unit.bind(T);
+Task.of = T.of.bind(T);

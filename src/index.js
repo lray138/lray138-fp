@@ -11,7 +11,6 @@ import { Kvm } from './Kvm/factory.js';
 import { Str } from './Str/factory.js';
 import { Num } from './Num/factory.js';
 import { Task } from './Task/factory.js';
-import { Future } from './Future/factory.js';
 import { Boo } from './Boo/factory.js';
 import { Reader } from './Reader/factory.js';
 import Dom from './Dom.js';
@@ -28,7 +27,6 @@ export {
 	Lst,
 	Kvm,
 	Boo,
-	Future, 
 	Maybe, 
 		Just, 
 		Nothing,

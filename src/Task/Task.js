@@ -1,34 +1,56 @@
 import Gonad from '../Gonad.js';
-import { proxy } from '../helpers.js';
 
 export default class Task extends Gonad {
     constructor(computation) {
         super();
-        this.computation = computation;
+        this.computation = this.normalize(computation);
     }
 
-    static unit(computation) {
-        return new Task(computation);  // Wraps value in a Task
+    normalize(computation) {
+        if (typeof computation !== 'function') {
+            return (_, res) => res(computation);
+        }
+
+        if (computation.length >= 2) {
+            return computation;
+        }
+
+        return (rej, res) => {
+            try {
+                const out = computation();
+                if (out && typeof out.then === 'function') {
+                    out.then(res).catch(rej);
+                } else {
+                    res(out);
+                }
+            } catch (error) {
+                rej(error);
+            }
+        };
+    }
+
+    static unit(value) {
+        return new Task((_, res) => res(value));
     }
 
     map(f) {
         return new Task((rej, res) => {
-            this.extract()(rej, (x) => res(f(x)));  // Log to check map
+            this.fork(rej, (x) => res(f(x)));
         });
     }
 
     bind(f) {
         return new Task((rej, res) => {
-            this.extract()(rej, (x) => f(x).fork(rej, res));  // Log to check bind
+            this.fork(rej, (x) => f(x).fork(rej, res));
         });
     }
 
-    extract(f) {
+    extract() {
         return this.computation;
     }
 
     fork(reject, resolve) {
-        return this.extract()(reject, resolve);  // Check if the computation is called
+        return this.extract()(reject, resolve);
     }
 
     ap(taskWithValue) {

@@ -95,4 +95,79 @@ test('call', () => {
   }).prop("prop").get()
 
   expect(a).toBe("a");
-})
+});
+
+test("'Kvm.path' resolves nested object paths.", () => {
+  let a = Kvm({
+    user: {
+      profile: {
+        name: "Ada"
+      }
+    }
+  }).path("/user/profile/name").get();
+
+  expect(a).toBe("Ada");
+});
+
+test("'Kvm.path' resolves array indexes in paths.", () => {
+  let a = Kvm({
+    users: [
+      { name: "Ada" },
+      { name: "Grace" }
+    ]
+  }).path("/users/1/name").get();
+
+  expect(a).toBe("Grace");
+});
+
+test("'Kvm.path' resolves bracketed array indexes in paths.", () => {
+  let a = Kvm({
+    some: [
+      { prop: { path: "zero" } },
+      { prop: { path: "one" } },
+      { prop: { path: "two" } }
+    ]
+  }).path("/some/[2]/prop/path").get();
+
+  expect(a).toBe("two");
+});
+
+test("'Kvm.path' resolves inline xpath-like bracket syntax.", () => {
+  let a = Kvm({
+    some: [
+      { prop: { path: "zero" } },
+      { prop: { path: "one" } },
+      { prop: { path: "two" } }
+    ]
+  }).path("/some[2]/prop/path").get();
+
+  expect(a).toBe("two");
+});
+
+test("'Kvm.path' resolves dot syntax with bracket indexes.", () => {
+  let a = Kvm({
+    some: [
+      { prop: { path: "zero" } },
+      { prop: { path: "one" } },
+      { prop: { path: "two" } }
+    ]
+  }).path("some[2].prop.path").get();
+
+  expect(a).toBe("two");
+});
+
+test("'Kvm.path' returns Left when path does not exist.", () => {
+  let a = Kvm({
+    user: {
+      profile: {
+        name: "Ada"
+      }
+    }
+  }).path("/user/address/city")
+    .fork(
+      x => x,
+      x => x
+    );
+
+  expect(a).toBe('path "/user/address/city" not found');
+});

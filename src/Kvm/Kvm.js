@@ -29,6 +29,37 @@ export default class Kvm extends Gonad {
 		return Left('prop "' + p + '" not found');
 	}
 
+	path(p) {
+		if (typeof p !== 'string' || p.trim() === '') {
+			return Left('path "' + p + '" not found');
+		}
+
+		const parts = p
+			.trim()
+			.split(/[/.]+/)
+			.filter(part => part !== '')
+			.flatMap(part => {
+				const segments = [];
+				const re = /([^[\]]+)|\[(\d+)\]/g;
+				let match;
+				while ((match = re.exec(part)) !== null) {
+					segments.push(match[1] ?? match[2]);
+				}
+				return segments;
+			});
+
+		let current = this.extract();
+
+		for (const part of parts) {
+			if (current == null || !(part in current)) {
+				return Left('path "' + p + '" not found');
+			}
+			current = current[part];
+		}
+
+		return wrapType(current);
+	}
+
 	call(f, ...args) {
 		return this.prop(f)
 			.bind(c => {

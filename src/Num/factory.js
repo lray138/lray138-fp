@@ -11,3 +11,5 @@ import { proxyWrap } from '../helpers.js';
 export function Num(value) {
 	return proxyWrap(N.of(value));
 }
+
+Num.of = Num;

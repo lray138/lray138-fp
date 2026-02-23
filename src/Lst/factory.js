@@ -4,3 +4,5 @@ import { proxyWrap } from '../helpers.js';
 export function Lst(value) {
 	return proxyWrap(L.of(value));
 }
+
+Lst.of = Lst;

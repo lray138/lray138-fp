@@ -9,3 +9,5 @@ import { proxyWrap } from '../helpers.js';
 export function Str(value) {
   return proxyWrap(S.of(value));
 }
+
+Str.of = Str;
