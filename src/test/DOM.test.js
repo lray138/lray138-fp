@@ -12,7 +12,7 @@ import {
 } from "../DOM.js";
 
 import Either from '../Either/Either.js';
-import Arr from '../Arr/Arr.js';
+import Lst from '../Arr/Lst.js';
 
 describe('getElementById Tests', () => {
     beforeEach(() => {
@@ -154,11 +154,11 @@ describe('querySelectorAll Tests', () => {
 
     });
 
-    test('returns Arr when element is missing', () => {
+    test('returns Lst when elements are found', () => {
         
         let el = querySelectorAll('.list > .list-item');
 
-        expect(el).toBeInstanceOf(Arr);
+        expect(el).toBeInstanceOf(Lst);
         expect(
             el.fork(
                 x => "not found",

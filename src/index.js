@@ -5,7 +5,7 @@
 
 import { Maybe, Just, Nothing } from './Maybe/factory.js';
 import { Either, Right, Left } from './Either/factory.js';
-import { Arr } from './Arr/factory.js';
+import { Arr, Lst, Kvm } from './Arr/factory.js';
 import { Str } from './Str/factory.js';
 import { Num } from './Num/factory.js';
 import { Task } from './Task/factory.js';
@@ -23,6 +23,8 @@ import {
 
 export {
 	Arr,
+	Lst,
+	Kvm,
 	Boo,
 	Future, 
 	Maybe, 

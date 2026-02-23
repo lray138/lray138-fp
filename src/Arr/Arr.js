@@ -5,13 +5,13 @@
 
 import Gonad from '../Gonad.js';
 import { Str } from '../Str/factory.js';
-import { Right, Left } from '../Either/factory.js';
+import { Left } from '../Either/factory.js';
 import { wrapType, proxy } from '../helpers.js';
 
 export default class Arr extends Gonad {
 
 	static unit(value) {
-		return new Arr(value);
+		return new this(value);
 	}
 
     head() {
@@ -22,11 +22,7 @@ export default class Arr extends Gonad {
 	walk(f) {
 		let x = this.extract();
 
-		if(Array.isArray(x)) {
-			x.forEach((value, index) => f(value, index, x));
-		} else {
-			Object.entries(x).forEach(([key, value]) => f(value, key, x));
-		}
+		x.forEach((value, index) => f(value, index, x));
 
 		return new Proxy(this, proxy);
 	}
@@ -35,9 +31,7 @@ export default class Arr extends Gonad {
 
 		let x = this.extract();
 
-		let o = Array.isArray(x)
-			? x.map(f)
-			: Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]));
+		let o = x.map(f);
 
 		return new Proxy(new Arr(o), proxy);
 	}
@@ -69,17 +63,8 @@ export default class Arr extends Gonad {
 	bind(f) {
 
 		let x = this.extract();
-		let o;
-
-		if(Array.isArray(x)) {
-			o = [];
-			x.forEach((value, key) => o[key] = f(value).join());
-		} else {
-			o = {};
-			Object.entries(x).forEach(([key, value]) => {
-				o[key] = f(value).extract();
-			});
-		}
+		let o = [];
+		x.forEach((value, key) => o[key] = f(value).join());
 
 		return new Proxy(new Arr(o), proxy);
 	}
@@ -91,7 +76,7 @@ export default class Arr extends Gonad {
 	join(d) {
 		d = d == null ? '' : d;
 		let v = this.extract();
-		return Array.isArray(v) ? Str(v.join(d)) : Str(Object.values(v).join(d));
+		return Str(v.join(d));
 	}
 
 	fork(_, f) {
@@ -109,7 +94,7 @@ export default class Arr extends Gonad {
 			value = [];
 		}
 
-		if(typeof value != "object") {
+		if(typeof value != "object" || !Array.isArray(value)) {
 			value = [value];
 		}
 

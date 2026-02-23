@@ -1,5 +1,5 @@
 import {Left, Right} from './Either/factory.js';
-import {Arr} from './Arr/factory.js';
+import {Lst} from './Arr/factory.js';
 import {curry} from './helpers.js';
 
 export function getElementById(id) {
@@ -28,7 +28,7 @@ export function querySelectorAll(s) {
 
 	return els.length == 0 
 		? Left(`no elements with selector ${s} found`)
-		: Arr(els);
+		: Lst(Array.from(els));
 }
 
 export const addEventListener = curry((event, callable, element) => {

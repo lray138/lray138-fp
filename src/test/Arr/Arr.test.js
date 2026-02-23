@@ -1,10 +1,20 @@
-import {Arr} from "../../Arr/factory.js";
+import {Arr, Lst, Kvm} from "../../Arr/factory.js";
 import {Just} from "../../Maybe/factory.js";
 
 test("'Arr' factory works.", () => {
   expect(Arr(['test']).type()).toBe('Arr');
   expect(Arr(['test']).get()).toEqual(['test']);
 
+});
+
+test("'Arr' routes object values to 'Kvm'.", () => {
+  expect(Arr({ test: 'value' }).type()).toBe('Kvm');
+  expect(Arr({ test: 'value' }).get()).toEqual({ test: 'value' });
+});
+
+test("'Lst' and 'Kvm' factories work.", () => {
+  expect(Lst(['test']).type()).toBe('Lst');
+  expect(Kvm({ test: 'value' }).type()).toBe('Kvm');
 });
 
 describe('Gonad interface is implemented', () => {

@@ -22,6 +22,7 @@ export default {
     output: {
         filename: './[name].bundle.js',
         clean: true,
+        globalObject: 'globalThis',
         library: 'lray138_fp',  // This is the global name of your library
         libraryTarget: 'umd',    // This allows it to work in multiple environments (CJS, AMD, global)
     },
