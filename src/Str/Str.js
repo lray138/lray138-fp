@@ -5,6 +5,7 @@
 
 import Gonad from '../Gonad.js';
 import { Left } from '../Either/factory.js';
+import { Boo } from '../Boo/factory.js';
 import { proxyWrap } from '../helpers.js';
 
 export default class Str extends Gonad {
@@ -25,7 +26,7 @@ export default class Str extends Gonad {
 	}
 
 	static unit(value) {
-		return new Str(value);
+		return new Str(String(value));
 	}
 
 	map(f) {
@@ -41,7 +42,7 @@ export default class Str extends Gonad {
 	}
 
 	eq(v) {
-		return this.extract() == v;
+		return this.bind(x => Boo(x === v));
 	}
 
 	constructor(value) {

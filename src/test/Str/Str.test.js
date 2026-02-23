@@ -28,3 +28,11 @@ test("'prepend' function works", () => {
       .get()
   ).toBe('3412');
 });
+
+
+// lose in strict out
+test("'eq' function works.", () => {
+  expect(Str(1).eq("1").get()).toBe(true);
+  expect(Str(1).eq(1).get()).toBe(false);
+  expect(Str(1).eqg("1")).toBe(true);
+});

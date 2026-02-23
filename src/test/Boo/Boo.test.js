@@ -87,3 +87,14 @@ describe("Boo methods work", () => {
   });
 
 });
+
+describe("'eq' method works", () => {
+
+  test("'eq' method works", () => {
+
+    expect(Boo(true).eq(true).get()).toBe(true);
+    expect(Boo(true).eqg(true)).toBe(true);
+    
+  });
+
+});

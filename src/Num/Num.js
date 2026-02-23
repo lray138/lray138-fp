@@ -4,12 +4,13 @@
 // there was a thought of why not put everythign in a try catch?
 
 import Gonad from '../Gonad.js';
+import { Boo } from '../Boo/factory.js';
 import { proxyWrap } from '../helpers.js';
 
 export default class Num extends Gonad {
 
-	static of(value) {
-		return new Num(value);
+	static unit(value) {
+		return new Num(Number(value));
 	}
 
 	add(x) {
@@ -28,16 +29,16 @@ export default class Num extends Gonad {
 		return this.map(v => v / x);
 	}
 
+	eq(v) {
+		return this.bind(x => Boo(x === v));
+	}
+
 	map(f) {
 		return proxyWrap(new Num(f(this.extract())));
 	}
 
 	bind(f) {
 		return this.map(f).join();
-	}
-
-	eq(v) {
-		return this.extract() == v;
 	}
 
 	extract() {

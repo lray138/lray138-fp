@@ -7,7 +7,8 @@
 import { 
     getElementById, 
     querySelector,
-    querySelectorAll
+    querySelectorAll,
+    querySelectorWithin
 } from "../DOM.js";
 
 import Either from '../Either/Either.js';
@@ -59,6 +60,47 @@ describe('querySelector Tests', () => {
     test('returns Right when element is found', () => {
         
         let el = querySelector('.quote');
+
+        expect(el).toBeInstanceOf(Either);
+        expect(
+            el.fork(
+                x => "not found",
+                x => x.innerHTML
+            )
+        ).toBe("Quoteable");
+
+    });
+
+    test('returns Left when element is missing', () => {
+        
+        let el = getElementById('.nope');
+
+        expect(el).toBeInstanceOf(Either);
+        expect(
+            el.fork(
+                x => "not found",
+                x => x.innerHTML
+            )
+        ).toBe("not found");
+
+    });
+
+});
+
+describe('querySelectorWithin Tests', () => {
+    beforeEach(() => {
+        document.body.innerHTML = `
+            <div id="wrap">
+                <div id="test">Old Text</div>
+                <div class="quote">Quoteable</div>
+            </div>
+        `;
+    });
+
+    test('returns Right when element is found', () => {
+        
+        let wrap = document.getElementById('wrap');
+        let el = querySelectorWithin('.quote', wrap);
 
         expect(el).toBeInstanceOf(Either);
         expect(

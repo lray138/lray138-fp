@@ -42,6 +42,11 @@ export default class Right extends Either {
   		return r(this.extract());
   	}
 
+  	tap(f) {
+	    f(this.extract());
+	    return this;
+	}
+
   	extend(f) {
   		return f(this);
   	}

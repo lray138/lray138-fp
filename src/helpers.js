@@ -10,7 +10,6 @@ import { Right, Left } from './Either/factory.js';
 import { Nothing } from './Maybe/factory.js';
 
 import Gonad from './Gonad.js'
-import { type } from 'os';
 
 export function wrapType(value) {
 

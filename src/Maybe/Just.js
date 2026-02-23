@@ -51,6 +51,6 @@ export default class Just extends Maybe {
 
   	static unit(value) {
     	return new Just(value);
-  	}
+  		}
 
 }

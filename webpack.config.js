@@ -56,7 +56,8 @@ export default {
                     'Num', 
                     'Reader',
                     'Str',
-                    'Writer'
+                    'Writer',
+                    'querySelectorWithin'
                 ], // Prevent renaming these function names
               },
               // keep_fnames: true, // Ensure that function names are preserved during minification

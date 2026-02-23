@@ -17,6 +17,7 @@ import {
 	getElementById, 
 	querySelector, 
 	querySelectorAll,
+	querySelectorWithin,
 	addEventListener
 } from './DOM.js';
 
@@ -38,5 +39,6 @@ export {
 	getElementById,
 	querySelector,
 	querySelectorAll,
-	addEventListener
+	addEventListener,
+	querySelectorWithin
 };

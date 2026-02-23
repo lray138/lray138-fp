@@ -14,6 +14,11 @@ export default class Arr extends Gonad {
 		return new Arr(value);
 	}
 
+    head() {
+        const [first] = this.extract();
+        return first !== undefined ? wrapType(first) : Left('array contains no elements');
+    }
+
 	walk(f) {
 		let x = this.extract();
 

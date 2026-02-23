@@ -15,6 +15,10 @@ export default class Left extends Either {
 		return v;
 	}
 
+    prop(p) {
+        return this;
+    }
+
 	static unit(val) {
 		return new Left(val);
 	}
@@ -28,6 +32,10 @@ export default class Left extends Either {
 	}
 
 	ap(f) {
+		return this;
+	}
+
+	tap(f) {
 		return this;
 	}
 

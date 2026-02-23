@@ -48,6 +48,10 @@ export default class Gonad {
     return this.getOrElse(v);
   }
 
+  eqg(v) {
+    return this.eq(v).get();
+  }
+
   fork(l, r) {
     throw new Error("'fork' function must be implemented by subtype");
   }
@@ -86,4 +90,3 @@ export default class Gonad {
   }
 
 }
-

@@ -24,6 +24,10 @@ export default class Boo extends Gonad {
 		return this.value;
 	}
 
+	eq(v) {
+		return this.map(x => x == v);
+	}
+
 	not() {
 		return proxyWrap(new Boo(!this.extract()));
 	}

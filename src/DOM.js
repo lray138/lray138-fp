@@ -12,12 +12,15 @@ export function getElementById(id) {
 }
 
 export function querySelector(s) {
-	let el = document.querySelector(s);
+	return querySelectorWithin(s, document);
+}
+
+export function querySelectorWithin(s, w) {
+	let el = w.querySelector(s);
 
 	return el == null 
 		? Left(`no element with selector ${s} found`)
 		: Right(el);
-
 }
 
 export function querySelectorAll(s) {
