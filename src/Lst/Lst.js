@@ -1,7 +1,7 @@
 import Gonad from '../Gonad.js';
 import { Str } from '../Str/factory.js';
 import { Left } from '../Either/factory.js';
-import { wrapType, proxy } from '../helpers.js';
+import { wrapType } from '../helpers.js';
 
 export default class Lst extends Gonad {
 
@@ -17,13 +17,13 @@ export default class Lst extends Gonad {
 	walk(f) {
 		let x = this.extract();
 		x.forEach((value, index) => f(value, index, x));
-		return new Proxy(this, proxy);
+		return this;
 	}
 
 	map(f) {
 		let x = this.extract();
 		let o = x.map(f);
-		return new Proxy(new Lst(o), proxy);
+		return new Lst(o);
 	}
 
 	prop(p) {
@@ -54,7 +54,7 @@ export default class Lst extends Gonad {
 		let x = this.extract();
 		let o = [];
 		x.forEach((value, key) => o[key] = f(value).join());
-		return new Proxy(new Lst(o), proxy);
+		return new Lst(o);
 	}
 
 	extract() {

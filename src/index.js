@@ -6,6 +6,7 @@
 import { Maybe, Just, Nothing } from './Maybe/factory.js';
 import { Either, Right, Left } from './Either/factory.js';
 import { Result, Ok, Err } from './Result/factory.js';
+import { Nil } from './Nil/factory.js';
 import { Lst } from './Lst/factory.js';
 import { Kvm } from './Kvm/factory.js';
 import { Str } from './Str/factory.js';
@@ -30,6 +31,7 @@ export {
 	Maybe, 
 		Just, 
 		Nothing,
+	Nil,
 	Num,
 	Either,
 		Left, 

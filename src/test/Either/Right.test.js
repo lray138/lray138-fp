@@ -68,7 +68,7 @@ describe('returns values "magic"', () => {
     expect(response.status).toBe(500);  
 
     expect(Right(response)
-        .status()
+        .prop('status')
         .get()).toBe(500);
 
   });

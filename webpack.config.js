@@ -49,6 +49,7 @@ export default {
                     'Maybe', 
                         'Just', 
                         'Nothing', 
+                        'Nil',
                     'Either', 
                         'Right', 
                         'Left',

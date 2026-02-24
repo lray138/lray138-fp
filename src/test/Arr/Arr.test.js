@@ -97,6 +97,26 @@ test('call', () => {
   expect(a).toBe("a");
 });
 
+test("'Kvm.prop' returns Nil when prop does not exist.", () => {
+  let a = Kvm({
+    prop: "a"
+  }).prop("missing").type();
+
+  expect(a).toBe("Nil");
+});
+
+test("'Kvm.prop' resolves path-style input.", () => {
+  let a = Kvm({
+    some: [
+      { prop: { path: "zero" } },
+      { prop: { path: "one" } },
+      { prop: { path: "two" } }
+    ]
+  }).prop("some[2].prop.path").get();
+
+  expect(a).toBe("two");
+});
+
 test("'Kvm.path' resolves nested object paths.", () => {
   let a = Kvm({
     user: {
@@ -156,7 +176,7 @@ test("'Kvm.path' resolves dot syntax with bracket indexes.", () => {
   expect(a).toBe("two");
 });
 
-test("'Kvm.path' returns Left when path does not exist.", () => {
+test("'Kvm.path' returns Nil when path does not exist.", () => {
   let a = Kvm({
     user: {
       profile: {
@@ -202,4 +222,20 @@ test("'Kvm.tryPath' returns Err when path does not exist.", () => {
     );
 
   expect(a).toBe('path "/user/address/city" not found');
+});
+
+test("'Kvm.tryProp' aliases 'tryPath'.", () => {
+  let a = Kvm({
+    some: [
+      { prop: { path: "zero" } },
+      { prop: { path: "one" } },
+      { prop: { path: "two" } }
+    ]
+  }).tryProp("some[2].prop.path")
+    .fork(
+      x => x,
+      x => x.type()
+    );
+
+  expect(a).toBe("Str");
 });

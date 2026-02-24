@@ -1,8 +1,8 @@
 import Gonad from '../Gonad.js';
 import { Str } from '../Str/factory.js';
-import { Left } from '../Either/factory.js';
+import { Nil } from '../Nil/factory.js';
 import { Ok, Err } from '../Result/factory.js';
-import { wrapType, proxy } from '../helpers.js';
+import { wrapType } from '../helpers.js';
 
 export default class Kvm extends Gonad {
 
@@ -13,26 +13,30 @@ export default class Kvm extends Gonad {
 	walk(f) {
 		let x = this.extract();
 		Object.entries(x).forEach(([key, value]) => f(value, key, x));
-		return new Proxy(this, proxy);
+		return this;
 	}
 
 	map(f) {
 		let x = this.extract();
 		let o = Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]));
-		return new Proxy(new Kvm(o), proxy);
+		return new Kvm(o);
 	}
 
 	prop(p) {
 		let value = this.extract();
+		const isPathLike = typeof p === 'string' && (p.includes('/') || p.includes('.') || p.includes('['));
+		if (isPathLike) {
+			return this.path(p);
+		}
 		if (value && typeof value === 'object' && p in value) {
 			return wrapType(value[p]);
 		}
-		return Left('prop "' + p + '" not found');
+		return Nil('prop "' + p + '" not found');
 	}
 
 	path(p) {
 		if (typeof p !== 'string' || p.trim() === '') {
-			return Left('path "' + p + '" not found');
+			return Nil('path "' + p + '" not found');
 		}
 
 		const parts = p
@@ -53,7 +57,7 @@ export default class Kvm extends Gonad {
 
 		for (const part of parts) {
 			if (current == null || !(part in current)) {
-				return Left('path "' + p + '" not found');``
+				return Nil('path "' + p + '" not found');
 			}
 			current = current[part];
 		}
@@ -63,9 +67,13 @@ export default class Kvm extends Gonad {
 
 	tryPath(p) {
 		const value = this.path(p);
-		return value.type() === 'Left'
-			? Err(value.extract())
+		return value.type() === 'Nil'
+			? Err(value.reason())
 			: Ok(value);
+	}
+
+	tryProp(p) {
+		return this.tryPath(p);
 	}
 
 	call(f, ...args) {
@@ -76,7 +84,7 @@ export default class Kvm extends Gonad {
 						? wrapType(c(...args[0]))
 						: wrapType(c(...args));
 				}
-				return Left('prop "' + f + '" is not callable');
+				return Nil('prop "' + f + '" is not callable');
 			});
 	}
 
@@ -92,7 +100,7 @@ export default class Kvm extends Gonad {
 			o[key] = f(value).extract();
 		});
 
-		return new Proxy(new Kvm(o), proxy);
+		return new Kvm(o);
 	}
 
 	extract() {
