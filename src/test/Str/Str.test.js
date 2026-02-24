@@ -29,6 +29,12 @@ test("'prepend' function works", () => {
   ).toBe('3412');
 });
 
+test("'Str' coercion works for String and template literals.", () => {
+  const s = Str('test');
+  expect(String(s)).toBe('test');
+  expect(`${s}`).toBe('test');
+});
+
 
 // lose in strict out
 test("'eq' function works.", () => {

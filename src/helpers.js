@@ -45,6 +45,24 @@ export const proxy = {
 
       const value = target.extract();
 
+      if (typeof prop === 'symbol') {
+        if (prop === Symbol.toPrimitive) {
+          return () => target.extract();
+        }
+
+        if (typeof target[prop] === 'function') {
+          return target[prop].bind(target);
+        }
+
+        if (value != null && value[prop] != null) {
+          return typeof value[prop] === 'function'
+            ? value[prop].bind(value)
+            : value[prop];
+        }
+
+        return undefined;
+      }
+
       const prototype = value == null 
         ? call[target.type()]()
         : Object.getPrototypeOf(value);

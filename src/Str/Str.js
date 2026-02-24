@@ -45,6 +45,14 @@ export default class Str extends Gonad {
 		return this.bind(x => Boo(x === v));
 	}
 
+	toString() {
+		return this.extract();
+	}
+
+	[Symbol.toPrimitive]() {
+		return this.extract();
+	}
+
 	constructor(value) {
 		super();
 		this.value = value;

@@ -53,7 +53,7 @@ export default class Kvm extends Gonad {
 
 		for (const part of parts) {
 			if (current == null || !(part in current)) {
-				return Left('path "' + p + '" not found');
+				return Left('path "' + p + '" not found');``
 			}
 			current = current[part];
 		}
