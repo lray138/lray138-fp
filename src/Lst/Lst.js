@@ -26,6 +26,12 @@ export default class Lst extends Gonad {
 		return new Lst(o);
 	}
 
+	filter(f) {
+		let x = this.extract();
+		let o = x.filter((value, index) => f(value, index, x));
+		return new Lst(o);
+	}
+
 	prop(p) {
 		let value = this.extract();
 		if (value && (typeof value === 'object' || Array.isArray(value)) && p in value) {

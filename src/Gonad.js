@@ -89,4 +89,8 @@ export default class Gonad {
     return this.constructor.name;
   }
 
+  getType() {
+    return this.type();
+  }
+
 }

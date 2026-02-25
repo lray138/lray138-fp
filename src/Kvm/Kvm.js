@@ -22,6 +22,52 @@ export default class Kvm extends Gonad {
 		return new Kvm(o);
 	}
 
+	getKeys() {
+		return wrapType(Object.keys(this.extract()));
+	}
+
+	keys() {
+		return this.getKeys();
+	}
+
+	filter(f) {
+		let x = this.extract();
+		let o = Object.fromEntries(
+			Object.entries(x).filter(([key, value]) => f(value, key, x))
+		);
+		return new Kvm(o);
+	}
+
+	filterKeys(f) {
+		return this.filter((value, key, source) => f(key, value, source));
+	}
+
+	reduce(f, initial) {
+		let x = this.extract();
+		const entries = Object.entries(x);
+
+		if (typeof f !== 'function') {
+			return Nil('reduce requires a callback');
+		}
+
+		if (arguments.length > 1) {
+			const out = entries.reduce((acc, [key, value]) => f(acc, value, key, x), initial);
+			return wrapType(out);
+		}
+
+		if (entries.length === 0) {
+			return Nil('cannot reduce empty Kvm without initial value');
+		}
+
+		let [_, first] = entries[0];
+		let acc = first;
+		for (let i = 1; i < entries.length; i++) {
+			const [key, value] = entries[i];
+			acc = f(acc, value, key, x);
+		}
+		return wrapType(acc);
+	}
+
 	prop(p) {
 		let value = this.extract();
 		const isPathLike = typeof p === 'string' && (p.includes('/') || p.includes('.') || p.includes('['));

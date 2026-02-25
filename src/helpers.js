@@ -6,6 +6,7 @@
 import { Num } from './Num/factory.js';
 import { Str } from './Str/factory.js';
 import { Lst } from './Lst/factory.js';
+import { Kvm } from './Kvm/factory.js';
 import { Right } from './Either/factory.js';
 
 import Gonad from './Gonad.js'
@@ -27,7 +28,7 @@ export function wrapType(value) {
           break;
 
         case 'object':
-            return Array.isArray(value) ? Lst(value) : Right(value);
+            return Array.isArray(value) ? Lst(value) : Kvm(value);
             break;
 
     }

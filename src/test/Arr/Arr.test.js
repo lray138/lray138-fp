@@ -1,5 +1,5 @@
 import {Lst} from "../../Lst/factory.js";
-import {Kvm} from "../../Kvm/factory.js";
+import {Kvm, attrsReducer} from "../../Kvm/factory.js";
 import {Just} from "../../Maybe/factory.js";
 
 test("'Lst' factory works.", () => {
@@ -35,6 +35,74 @@ describe('Gonad interface is implemented', () => {
         first: "JOHN",
         last: "SMITH"
       });
+  });
+
+  test("'Kvm.getKeys' returns list of keys.", () => {
+      expect(
+        Kvm({
+          first: "John",
+          last: "Smith"
+        })
+          .getKeys()
+          .get()
+      ).toEqual(["first", "last"]);
+  });
+
+  test("'Kvm.filterKeys' filters object by key predicate.", () => {
+      expect(
+        Kvm({
+          first: "John",
+          last: "Smith",
+          age: 30
+        })
+          .filter((value, key) => key.startsWith("a"))
+          .get()
+      ).toEqual({
+        age: 30
+      });
+  });
+
+  test("'Kvm.reduce' supports reducer callback mode.", () => {
+      expect(
+        Kvm({
+          a: 1,
+          b: 2,
+          c: 3
+        })
+          .reduce((acc, value) => acc + value, 0)
+          .get()
+      ).toBe(6);
+  });
+
+  test("'Kvm.reduce' without callback returns Nil.", () => {
+      expect(
+        Kvm({
+          class: "card"
+        })
+          .reduce()
+          .type()
+      ).toBe("Nil");
+  });
+
+  test("'Kvm.reduce' with attrsReducer builds html attribute string.", () => {
+      expect(
+        Kvm({
+          class: "card",
+          id: "hero",
+          hidden: false,
+          disabled: true
+        })
+          .reduce(attrsReducer, '')
+          .get()
+      ).toBe('class="card" id="hero" disabled');
+  });
+
+  test("'Lst.filter' filters list by predicate.", () => {
+      expect(
+        Lst([1, 2, 3, 4])
+          .filter((value) => value % 2 === 0)
+          .get()
+      ).toEqual([2, 4]);
   });
 
   test("'Lst.bind' function works.", () => {
@@ -115,6 +183,16 @@ test("'Kvm.prop' resolves path-style input.", () => {
   }).prop("some[2].prop.path").get();
 
   expect(a).toBe("two");
+});
+
+test("'Kvm.prop' returns wrapped Kvm for object values.", () => {
+  let a = Kvm({
+    col_1: {
+      content: "hello"
+    }
+  }).prop("col_1").type();
+
+  expect(a).toBe("Kvm");
 });
 
 test("'Kvm.path' resolves nested object paths.", () => {
