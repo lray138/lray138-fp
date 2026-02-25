@@ -11,7 +11,7 @@ test("'Nil' forks with reason on left branch.", () => {
 		x => x
 	);
 
-	expect(out).toBe("missing");
+	expect(out).toBe("");
 });
 
 test("'Nil' helper conversions work.", () => {
@@ -23,11 +23,11 @@ test("'Nil' helper conversions work.", () => {
 			x => x,
 			x => x
 		)
-	).toBe("missing");
+	).toBe("");
 });
 
 test("'Nil' coercion works.", () => {
 	const n = Nil("missing");
-	expect(String(n)).toBe("missing");
-	expect(`${n}`).toBe("missing");
+	expect(String(n)).toBe("");
+	expect(`${n}`).toBe("");
 });

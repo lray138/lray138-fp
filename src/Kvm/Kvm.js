@@ -68,7 +68,7 @@ export default class Kvm extends Gonad {
 	tryPath(p) {
 		const value = this.path(p);
 		return value.type() === 'Nil'
-			? Err(value.reason())
+			? Err('path "' + p + '" not found')
 			: Ok(value);
 	}
 

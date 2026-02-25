@@ -37,7 +37,7 @@ export default class Nil extends Gonad {
 	}
 
 	reason() {
-		return this.message;
+		return '';
 	}
 
 	isNil() {
@@ -65,11 +65,10 @@ export default class Nil extends Gonad {
 	}
 
 	static unit(message) {
-		return new Nil(message);
+		return new Nil();
 	}
 
-	constructor(message) {
+	constructor() {
 		super();
-		this.message = message == null ? 'value is nil' : String(message);
 	}
 }

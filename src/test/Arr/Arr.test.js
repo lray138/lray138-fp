@@ -189,7 +189,7 @@ test("'Kvm.path' returns Nil when path does not exist.", () => {
       x => x
     );
 
-  expect(a).toBe('path "/user/address/city" not found');
+  expect(a).toBe('');
 });
 
 test("'Kvm.tryPath' returns Ok with wrapped value.", () => {
