@@ -7,6 +7,7 @@ import { Num } from './Num/factory.js';
 import { Str } from './Str/factory.js';
 import { Lst } from './Lst/factory.js';
 import { Kvm } from './Kvm/factory.js';
+import { Boo } from './Boo/factory.js';
 import { Right } from './Either/factory.js';
 
 import Gonad from './Gonad.js'
@@ -19,9 +20,13 @@ export function wrapType(value) {
     
     switch (typeof value) {
 
-      case 'number':
-          return Num(value)
-          break;
+        case 'boolean':     
+            return Boo(value)
+            break;
+
+        case 'number':
+            return Num(value)
+            break;
 
       case 'string':
           return Str(value)
@@ -33,7 +38,7 @@ export function wrapType(value) {
 
     }
 
-    return Right(value);
+    return value;
 }
 
 export function proxyWrap(x) {
