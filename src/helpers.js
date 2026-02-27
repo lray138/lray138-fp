@@ -28,7 +28,7 @@ export function wrapType(value) {
             return Num(value)
             break;
 
-      case 'string':
+        case 'string':
           return Str(value)
           break;
 

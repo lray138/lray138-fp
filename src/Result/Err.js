@@ -13,6 +13,11 @@ export default class Err extends Result {
 	getOrElse(v) {
 		return v;
 	}
+    
+    orElse(f) {
+        // f should return a Result (Ok or Err)
+        return f(this.extract());
+    }
 
 	fork(f, _) {
 		return f(this.extract());

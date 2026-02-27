@@ -14,6 +14,10 @@ export default class Ok extends Result {
 		return v.map(this.extract());
 	}
 
+    orElse(_) {
+        return this;
+    }
+
 	fork(_, r) {
 		return r(this.extract());
 	}
